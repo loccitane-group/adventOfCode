@@ -1,5 +1,52 @@
-function findPossibleGames(gameRecords, { nbGreenCubes, nbBlueCubes, nbRedCubes }) {
-    return ['Game 1', 'Game 2', 'Game 3', 'Game 4', 'Game 5']
+function findPossibleGames(rawGameRecords, { nbRedCubes, nbGreenCubes, nbBlueCubes,  }) {
+    const possibleGames = []
+
+    const gameRecordLines = rawGameRecords.split('\n')
+    const gameRecords = gameRecordLines.map(line => ({
+        gameId: line.split(':')[0].trim(),
+        rounds: line.split(':')[1].trim().split(';')
+    }))
+
+    for (let i = 0; i < gameRecords.length; i++) {
+        const gameRecord = gameRecords[i]
+        const rounds = gameRecord.rounds
+        const nbTotalRounds = rounds.length
+        let nbPossibleRounds = 0
+        
+        for (let j = 0; j < rounds.length; j++) {
+            let requiredNbGreenCubes = 0
+            let requiredNbBlueCubes = 0
+            let requiredNbRedCubes = 0
+
+            const round = rounds[j]
+            const cubes = round.split(',').map(cube => cube.trim())
+
+            for (let k = 0; k < cubes.length; k++) {
+                const cube = cubes[k]
+                const color = cube.split(' ')[1]
+                const nbCubes = parseInt(cube.split(' ')[0])
+
+                if (color === 'green') {
+                    requiredNbGreenCubes += nbCubes
+                } else if (color === 'blue') {
+                    requiredNbBlueCubes += nbCubes
+                } else if (color === 'red') {
+                    requiredNbRedCubes += nbCubes
+                }
+            }
+
+            if (requiredNbGreenCubes <= nbGreenCubes && requiredNbBlueCubes <= nbBlueCubes && requiredNbRedCubes <= nbRedCubes) {
+                nbPossibleRounds++
+            }
+        }
+
+        if (nbPossibleRounds === nbTotalRounds) {
+            possibleGames.push(gameRecord.gameId)
+        }
+
+    }
+    
+    return possibleGames
 }
 
 function sumOfGameIds(gameIds) {
