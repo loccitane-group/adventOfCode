@@ -27,3 +27,10 @@ test('Sum of Game Ids 3 and 4 should be 7', () => {
 
     expect(sumOfGameIds(gameIds)).toBe(7)
 })
+
+
+test('Sum of Game Ids 1 and 2 and 5 should be 8', () => {
+    const gameIds = ['Game 1', 'Game 2', 'Game 5']
+
+    expect(sumOfGameIds(gameIds)).toBe(8)
+})
