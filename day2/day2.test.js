@@ -16,8 +16,14 @@ const {
 // })
 
 
-test('Sum of Game Ids', () => {
-    const gameIds = ['Game 1', 'Game 2', 'Game 3', 'Game 4', 'Game 5']
+test('Sum of Game Ids 1 and 2 should be 3', () => {
+    const gameIds = ['Game 1', 'Game 2',]
 
-    expect(sumOfGameIds(gameIds)).toBe(15)
+    expect(sumOfGameIds(gameIds)).toBe(3)
+})
+
+test('Sum of Game Ids 3 and 4 should be 7', () => {
+    const gameIds = ['Game 3', 'Game 4']
+
+    expect(sumOfGameIds(gameIds)).toBe(7)
 })

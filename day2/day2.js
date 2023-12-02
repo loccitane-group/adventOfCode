@@ -3,7 +3,15 @@ function findPossibleGames(gameRecords, { nbGreenCubes, nbBlueCubes, nbRedCubes 
 }
 
 function sumOfGameIds(gameIds) {
-    return 15
+    let sum = 0
+
+    for (let i = 0; i < gameIds.length; i++) {
+        const gameId = gameIds[i]
+        const gameIdNumber = parseInt(gameId.split(' ')[1])
+        sum += gameIdNumber
+    }
+
+    return sum
 }
 
 module.exports = {
