@@ -85,6 +85,8 @@ function findGearsRatio(engineSchematic) {
     let gears = []
     const engineSchematicLines = engineSchematic.split('\n').map(x => x.trim())
 
+    const partNumbers = findAdjacentNumbers(engineSchematic)
+
     for (let i = 0; i < engineSchematicLines.length; i++) {
         const engineSchematicLine = engineSchematicLines[i]
 
@@ -95,7 +97,7 @@ function findGearsRatio(engineSchematic) {
                 let surroundedNumbers = []
 
                 for (var k = -1; k < 2; k++) {
-                    for (var l = -2; l < 1; l++) {
+                    for (var l = -1; l < 2; l++) {
                         let surroundedLine = i+k
                         let surroundedRow = j+l
                         let isValidLine = isValidIndex(surroundedLine, engineSchematicLines)
@@ -106,17 +108,26 @@ function findGearsRatio(engineSchematic) {
                             let foundDigit = isNumber(surroundingChar)
 
                             if (foundDigit) {
-                                
+                                // Find if the found digit is part of a part number
+                                let foundPartNumbers = partNumbers.find(number => {
+                                    return number.startPosition.line === surroundedLine
+                                    && number.startPosition.row <= surroundedRow
+                                    && number.endPosition.row >= surroundedRow
+                                })
 
-                                surroundedNumbers.push(surroundingChar)
+                                // Add the found part number to the surrounded numbers only if it's not already there
+                                if (foundPartNumbers && !surroundedNumbers.includes(foundPartNumbers)) {
+                                    surroundedNumbers.push(foundPartNumbers)
+                                }
                             }
                         }
                     }
                 }
 
-                gears.push(surroundedNumbers)
+                if (surroundedNumbers.length === 2) {
+                    gears.push({ value: surroundedNumbers[0].value * surroundedNumbers[1].value})
+                }
             }
-
         }
     }
 
