@@ -2,7 +2,7 @@ function sum(numbers) {
     let sum = 0
 
     for (let i = 0; i < numbers.length; i++) {
-        sum += numbers[i]
+        sum += numbers[i].value
     }
 
     return sum
@@ -60,7 +60,17 @@ function findAdjacentNumbers (engineSchematic) {
                 numbers.push(parseInt(tempNumberBuffer))
 
                 if (hasAdjacentSymbol) {
-                    partNumbers.push(parseInt(tempNumberBuffer))
+                    partNumbers.push({
+                        value: parseInt(tempNumberBuffer),
+                        startPosition: {
+                            line: i,
+                            row: j - tempNumberBuffer.length
+                        },
+                        endPosition: {
+                            line: i,
+                            row: j
+                        }
+                    })
                 }
 
                 tempNumberBuffer = ''
@@ -71,7 +81,50 @@ function findAdjacentNumbers (engineSchematic) {
     return partNumbers
 }
 
+function findGearsRatio(engineSchematic) {
+    let gears = []
+    const engineSchematicLines = engineSchematic.split('\n').map(x => x.trim())
+
+    for (let i = 0; i < engineSchematicLines.length; i++) {
+        const engineSchematicLine = engineSchematicLines[i]
+
+        for (let j = 0; j < engineSchematicLine.length; j++) {
+            const char = engineSchematicLine[j]
+    
+            if (char === '*') {
+                let surroundedNumbers = []
+
+                for (var k = -1; k < 2; k++) {
+                    for (var l = -2; l < 1; l++) {
+                        let surroundedLine = i+k
+                        let surroundedRow = j+l
+                        let isValidLine = isValidIndex(surroundedLine, engineSchematicLines)
+                        let isValidRow = isValidIndex(surroundedRow, engineSchematicLine)
+
+                        if( isValidLine && isValidRow) {
+                            let surroundingChar = engineSchematicLines[surroundedLine][surroundedRow]
+                            let foundDigit = isNumber(surroundingChar)
+
+                            if (foundDigit) {
+                                
+
+                                surroundedNumbers.push(surroundingChar)
+                            }
+                        }
+                    }
+                }
+
+                gears.push(surroundedNumbers)
+            }
+
+        }
+    }
+
+    return gears
+}
+
 module.exports = {
     sum,
-    findAdjacentNumbers
+    findAdjacentNumbers,
+    findGearsRatio
 }

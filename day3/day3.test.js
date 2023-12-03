@@ -1,18 +1,19 @@
 const {
     sum,
-    findAdjacentNumbers
+    findAdjacentNumbers,
+    findGearsRatio
 } = require('./day3')
 
 test('sum adjacent numbers', () => {
     const adjacentsNumbers = [
-        467,
-        35,
-        633,
-        617,
-        592,
-        755,
-        664,
-        598
+        { value: 467 },
+        { value: 35 },
+        { value: 633 },
+        { value: 617 },
+        { value: 592 },
+        { value: 755 },
+        { value: 664 },
+        { value: 598 }
     ]
 
     const result = sum(adjacentsNumbers)
@@ -40,7 +41,6 @@ test('8 numbers should be part numbers on 10 numbers', () => {
     expect(sumOfPartNumbers).toBe(4361)
 })
 
-
 test('test with 18 numbers', () => {
     const engineSchematic = `
     ....937..........309.............191..............745.................913......................................256................891.......
@@ -50,7 +50,7 @@ test('test with 18 numbers', () => {
 
     const partNumbers = findAdjacentNumbers(engineSchematic)
 
-    expect(partNumbers).toEqual([
+    expect(partNumbers.map(x => x.value)).toEqual([
         309,
         191,
         745,
@@ -66,7 +66,6 @@ test('test with 18 numbers', () => {
     ])
 })
 
-
 test('test with 34 numbers', () => {
     const engineSchematic = `
 823......................804......*.......987..*.....819..........754.970*541................%......584*......911............/......559.....
@@ -77,7 +76,7 @@ test('test with 34 numbers', () => {
 
     const partNumbers = findAdjacentNumbers(engineSchematic)
 
-    expect(partNumbers).toEqual([
+    expect(partNumbers.map(x => x.value)).toEqual([
         823,
         804,
         970,
@@ -108,9 +107,6 @@ test('test with 34 numbers', () => {
     ])
 })
 
-
-
-
 test('test with 119 numbers', () => {
     const engineSchematic = `
     .........777.-.......211.886.421.........................42.........799....284.99.................#......*..238#.......#...*................
@@ -132,7 +128,7 @@ test('test with 119 numbers', () => {
 
     const partNumbers = findAdjacentNumbers(engineSchematic)
 
-    expect(partNumbers).toEqual([
+    expect(partNumbers.map(x => x.value)).toEqual([
         777,
         211,
         421,
@@ -163,8 +159,6 @@ test('test with 119 numbers', () => {
     ])
 })
 
-
-
 test('test Hugo 1', () => {
     const engineSchematic = `
 .......#40..........*.....#...@....473.......789................/...*.......902......987..........179......*.................382..519.......
@@ -180,7 +174,6 @@ test('test Hugo 1', () => {
     expect(sumOfPartNumbers).toBe(15081)
 })
 
-
 test('test Hugo 2', () => {
     const engineSchematic = `
 ......................881...........*............................989......+....235..............491...*...-.....693.........16..............
@@ -190,7 +183,7 @@ test('test Hugo 2', () => {
 `
 
     const partNumbers = findAdjacentNumbers(engineSchematic)
-    expect(partNumbers).toEqual([
+    expect(partNumbers.map(x => x.value)).toEqual([
         957,
         345,
         56,
@@ -214,7 +207,6 @@ test('test Hugo 2', () => {
     
     expect(sumOfPartNumbers).toBe(9309)
 })
-
 
 test('test Hugo 3', () => {
     const engineSchematic = `
@@ -245,7 +237,6 @@ test('test Hugo 4', () => {
 ......................*.............*............881.........*....*776...*.105......*...=....#....&........&.526..+............#........%...
 ....95.....410......566..760....760........586....*....*...560........548.......335...951...749...256.........*......313....$...888........
 `
-
     const partNumbers = findAdjacentNumbers(engineSchematic)
 
     const sumOfPartNumbers = sum(partNumbers)
@@ -400,5 +391,25 @@ test('part 1', () => {
 
     const sumOfPartNumbers = sum(partNumbers)
     
-    expect(sumOfPartNumbers).toBe(1234567)
+    expect(sumOfPartNumbers).toBe(532428)
+})
+
+
+test('find gears from sample', () => {
+    const engineSchematic = `
+467..114..
+...*......
+..35..633.
+......#...
+617*......
+.....+.58.
+..592.....
+......755.
+...$.*....
+.664.598..
+`
+
+    const gearsRatio = findGearsRatio(engineSchematic)
+
+    expect(gearsRatio).toBe(467835)
 })
