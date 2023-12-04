@@ -5,7 +5,7 @@ const getGameId = (gameName: string): number => {
 };
 
 describe('Day 2 ADVOC2023', () => {
-    it('Should set the game id', () => {
+    it('Should get the game id', () => {
         expect(getGameId('Game 1')).toEqual(1);
     });
 });
