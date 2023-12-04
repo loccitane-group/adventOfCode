@@ -291,5 +291,5 @@ Card 198: 87  3 64 10 88 45 16 40 23 60 | 63 77 36 52 47 76 84 96 19 13 73 39 26
 
     const points = calculateManyCards(card)
 
-    expect(points).toBe(0)
+    expect(points).toBe(18519)
 })
