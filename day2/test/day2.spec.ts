@@ -12,12 +12,12 @@ const parseGameSets = (cubePickedInGame: string) =>
         });
     });
 
-const getRedCubeAmount = (cubePickedInGame: string) => {
+const getCubeAmount = (cubePickedInGame: string, cubeColor: string) => {
     const redCube = parseGameSets(cubePickedInGame);
     return redCube.reduce((accumulator, currentSet) => {
         currentSet.forEach((cubeSelection) => {
             const [quantity, color] = cubeSelection.split(' ');
-            if (color === 'red') accumulator += Number(quantity);
+            if (color === cubeColor) accumulator += Number(quantity);
         });
         return accumulator;
     }, 0);
@@ -28,10 +28,10 @@ describe('Day 2 ADVOC2023', () => {
         expect(getGameId('Game 1')).toEqual(1);
     });
     it('Should get the red cube amount', () => {
-        expect(getRedCubeAmount(' 2 red')).toEqual(2);
+        expect(getCubeAmount(' 2 red', 'red')).toEqual(2);
     });
     it('Should get the red cube amount when set contains multiple colors', () => {
-        expect(getRedCubeAmount(' 2 blue, 3 red')).toEqual(3);
+        expect(getCubeAmount(' 2 blue, 3 red', 'red')).toEqual(3);
     });
     it('Should correctly parse game sets', () => {
         expect(parseGameSets(' 2 blue, 3 red; 2 blue, 3 red')).toEqual([
@@ -40,6 +40,9 @@ describe('Day 2 ADVOC2023', () => {
         ]);
     });
     it('Should get the red cube amount when game contains multiple sets', () => {
-        expect(getRedCubeAmount(' 2 blue, 3 red; 2 blue, 3 red')).toEqual(6);
+        expect(getCubeAmount(' 2 blue, 3 red; 2 blue, 3 red', 'red')).toEqual(6);
+    });
+    it('Should get the blue cube amount when game contains multiple sets', () => {
+        expect(getCubeAmount(' 2 blue, 3 red; 2 blue, 3 red', 'blue')).toEqual(4);
     });
 });
