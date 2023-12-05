@@ -1,4 +1,4 @@
-const { calculatePoints, parseCards, calculateManyCards } = require('./day4')
+const { calculatePoints, parseCards, calculateManyCards } = require('./day4.part1')
 
 test('first case', () => {
     const card = 'Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53'
