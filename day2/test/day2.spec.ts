@@ -40,6 +40,16 @@ const parseGame = (gameDescription: string): Game => {
     };
 };
 
+type BagContent = {
+    red: number;
+    green: number;
+    blue: number;
+};
+
+const isGamePossible = (game: Game, bagContent: BagContent): boolean => {
+    return !(game.red > bagContent.red || game.green > bagContent.green || game.blue > bagContent.blue);
+};
+
 describe('Day 2 ADVOC2023', () => {
     it('Should get the game id', () => {
         expect(getGameId('Game 1')).toEqual(1);
@@ -69,5 +79,33 @@ describe('Day 2 ADVOC2023', () => {
             green: 4,
             blue: 9,
         });
+    });
+    it('Should valid a valid game', () => {
+        const game: Game = {
+            id: 1,
+            red: 5,
+            green: 4,
+            blue: 9,
+        };
+        const bagContent: BagContent = {
+            red: 5,
+            green: 4,
+            blue: 9,
+        };
+        expect(isGamePossible(game, bagContent)).toBe(true);
+    });
+    it('Should not valid a invalid game', () => {
+        const game: Game = {
+            id: 1,
+            red: 500,
+            green: 4,
+            blue: 9,
+        };
+        const bagContent: BagContent = {
+            red: 5,
+            green: 4,
+            blue: 9,
+        };
+        expect(isGamePossible(game, bagContent)).toBe(false);
     });
 });
