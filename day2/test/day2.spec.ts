@@ -14,8 +14,8 @@ const parseGameSets = (setsDescription: string) =>
     });
 
 const getCubeAmount = (setsDescription: string, cubeColor: string) => {
-    const redCube = parseGameSets(setsDescription);
-    return redCube.reduce((maxAmount, currentSet) => {
+    const coloredCube = parseGameSets(setsDescription);
+    return coloredCube.reduce((maxAmount, currentSet) => {
         currentSet.forEach((cubeSelection) => {
             const [quantity, color] = cubeSelection.split(' ');
             if (color === cubeColor) maxAmount = maxAmount > Number(quantity) ? maxAmount : Number(quantity);
@@ -66,6 +66,17 @@ const sumInvalidGamesId = (gamesRecord: string[]): number => {
     }, 0);
 };
 
+const findGamePower = (gamesRecord: string): number => {
+    const parsedGame = parseGame(gamesRecord);
+    return parsedGame.red * parsedGame.green * parsedGame.blue;
+};
+
+const sumGamesPower = (gamesRecord: string[]) => {
+    return gamesRecord.reduce((accumulator, gameRecord) => {
+        accumulator += findGamePower(gameRecord);
+        return accumulator;
+    }, 0);
+};
 describe('Day 2 ADVOC2023', () => {
     it('Should get the game id', () => {
         expect(getGameId('Game 1')).toEqual(1);
@@ -124,7 +135,7 @@ describe('Day 2 ADVOC2023', () => {
         };
         expect(isGamePossible(game, bagContent)).toBe(false);
     });
-    it('should solve record in doc', () => {
+    it('should solve record in doc part 1', () => {
         const gameRecord = [
             'Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green',
             'Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue',
@@ -134,7 +145,27 @@ describe('Day 2 ADVOC2023', () => {
         ];
         expect(sumInvalidGamesId(gameRecord)).toEqual(8);
     });
-    it('should solve game record of day2', () => {
+
+    it('should solve game record of day2 part1', () => {
         expect(sumInvalidGamesId(games)).toEqual(2416);
+    });
+
+    it('Should find the power of a game', () => {
+        expect(findGamePower('Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green')).toEqual(48);
+    });
+
+    it('should solve record in doc part 2', () => {
+        const gameRecord = [
+            'Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green',
+            'Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue',
+            'Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red',
+            'Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red',
+            'Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green',
+        ];
+        expect(sumGamesPower(gameRecord)).toEqual(2286);
+    });
+
+    it('should solve game record of day2 part2', () => {
+        expect(sumGamesPower(games)).toEqual(63307);
     });
 });
