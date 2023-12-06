@@ -1,4 +1,4 @@
-from day2.main import GREEN_PATTERN, BLUE_PATTERN, GAMES_EXAMPLE, check_color_by_pattern_within_round, check_round, \
+from day2.logic import GREEN_PATTERN, BLUE_PATTERN, GAMES_EXAMPLE, check_color_by_pattern_within_round, check_round, \
     check_game, parse_game, check_multiple_rounds, process_games_scores, split_game_list, sum_scores, RED_PATTERN
 
 

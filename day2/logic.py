@@ -69,7 +69,37 @@ def sum_scores(games_list):
 
 RED_PATTERN = re.compile('(\d+) red')
 
-if __name__ == '__main__':
-    # print scores from input file
-    with open('input_day2.txt') as f:
-        print(sum_scores(f.read()))
+def check_minimum_set_per_game(game):
+    game_id, all_rounds, rounds = parse_game(game)
+
+    mins = {
+        'red': 0,
+        'green': 0,
+        'blue': 0,
+    }
+
+    for r in rounds:
+        parsed_red = minimum_by_pattern(RED_PATTERN, r)
+        parsed_green = minimum_by_pattern(GREEN_PATTERN, r)
+        parser_blue = minimum_by_pattern(BLUE_PATTERN, r)
+        mins['red'] = max(mins['red'], parsed_red)
+        mins['green'] = max(mins['green'], parsed_green)
+        mins['blue'] = max(mins['blue'], parser_blue)
+
+    return mins
+
+
+def minimum_by_pattern(pattern, r):
+    eventual_pattern = parse_eventual_pattern(pattern, r)
+    if eventual_pattern is None:
+        return 0
+    return int(eventual_pattern)
+
+def power_of_minimum(game):
+    return check_minimum_set_per_game(game)['red'] \
+        * check_minimum_set_per_game(game)['green'] \
+        * check_minimum_set_per_game(game)['blue']
+
+
+def sum_of_power_min(GAMES_EXAMPLE):
+    return sum([power_of_minimum(g) for g in split_game_list(GAMES_EXAMPLE)])
