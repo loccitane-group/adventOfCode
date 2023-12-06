@@ -6,14 +6,6 @@ const {
     getAllScratchcards
 } = require('./day4.part2')
 
-test('first case should count the number of matches', () => {
-    const card = 'Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53'
-
-    const points = calculateMatches(card)
-
-    expect(points).toBe(4)
-})
-
 test('extract card details from card document', () => {
     const cards = `Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53`
 
@@ -25,7 +17,6 @@ test('extract card details from card document', () => {
         myNumbers: [83, 86,  6, 31, 17,  9, 48, 53]
     }])
 })
-
 
 test('extract many card details from card document', () => {
     const cards = `Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
@@ -61,45 +52,121 @@ test('extract many card details from card document', () => {
         cardNumber: 6,
         winningNumbers: [31, 18, 13, 56, 72],
         myNumbers: [74, 77, 10, 23, 35, 67, 36, 11]
-    }
-])
+    }])
 })
 
+test('first case should count the number of matches', () => {
+    const card = {
+        cardNumber: 1,
+        winningNumbers: [41, 48, 83, 86, 17],
+        myNumbers: [83, 86,  6, 31, 17,  9, 48, 53]
+    }
+
+    const points = calculateMatches(card)
+
+    expect(points).toBe(4)
+})
 
 test('find the winning cards', () => {
-    const cards = `Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
-    Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19
-    Card 3:  1 21 53 59 44 | 69 82 63 72 16 21 14  1
-    Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83
-    Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36
-    Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11`
+    const cards = [{
+        cardNumber: 1,
+        winningNumbers: [41, 48, 83, 86, 17],
+        myNumbers: [83, 86,  6, 31, 17,  9, 48, 53]
+    }, {
+        cardNumber: 2,
+        winningNumbers: [13, 32, 20, 16, 61],
+        myNumbers: [61, 30, 68, 82, 17, 32, 24, 19]
+    }, {
+        cardNumber: 3,
+        winningNumbers: [1, 21, 53, 59, 44],
+        myNumbers: [69, 82, 63, 72, 16, 21, 14, 1]
+    }, {
+        cardNumber: 4,
+        winningNumbers: [41, 92, 73, 84, 69],
+        myNumbers: [59, 84, 76, 51, 58, 5, 54, 83]
+    }, {
+        cardNumber: 5,
+        winningNumbers: [87, 83, 26, 28, 32],
+        myNumbers: [88, 30, 70, 12, 93, 22, 82, 36]
+    }, {
+        cardNumber: 6,
+        winningNumbers: [31, 18, 13, 56, 72],
+        myNumbers: [74, 77, 10, 23, 35, 67, 36, 11]
+    }]
 
-    const startingIndex = 0
+    const cardNumber = 1
 
-    const wonCards = getWinningCards(cards, startingIndex)
+    const wonCards = getWinningCards(cards, cardNumber)
 
     expect(wonCards).toEqual([
-        'Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19',
-        'Card 3:  1 21 53 59 44 | 69 82 63 72 16 21 14  1',
-        'Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83',
-        'Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36'
+        {
+            cardNumber: 2,
+            winningNumbers: [13, 32, 20, 16, 61],
+            myNumbers: [61, 30, 68, 82, 17, 32, 24, 19]
+        }, {
+            cardNumber: 3,
+            winningNumbers: [1, 21, 53, 59, 44],
+            myNumbers: [69, 82, 63, 72, 16, 21, 14, 1]
+        }, {
+            cardNumber: 4,
+            winningNumbers: [41, 92, 73, 84, 69],
+            myNumbers: [59, 84, 76, 51, 58, 5, 54, 83]
+        }, {
+            cardNumber: 5,
+            winningNumbers: [87, 83, 26, 28, 32],
+            myNumbers: [88, 30, 70, 12, 93, 22, 82, 36]
+        }
     ])
 })
 
 
+test('find the winning cards counts with 2 cards', () => {
+    const cards = [{
+        cardNumber: 1,
+        winningNumbers: [41, 48, 83, 86, 17],
+        myNumbers: [83, 86,  6, 31, 17,  9, 48, 53]
+    }, {
+        cardNumber: 2,
+        winningNumbers: [13, 32, 20, 16, 61],
+        myNumbers: [61, 30, 68, 82, 17, 32, 24, 19]
+    }]
+
+    const scratchcards = getWonCardCount(cards)
+
+    expect(scratchcards.length).toEqual(1)
+})
+
 test('find the winning cards counts', () => {
-    const cards = `Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
-    Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19
-    Card 3:  1 21 53 59 44 | 69 82 63 72 16 21 14  1
-    Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83
-    Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36
-    Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11`
+    const cards = [{
+        cardNumber: 1,
+        winningNumbers: [41, 48, 83, 86, 17],
+        myNumbers: [83, 86,  6, 31, 17,  9, 48, 53]
+    }, {
+        cardNumber: 2,
+        winningNumbers: [13, 32, 20, 16, 61],
+        myNumbers: [61, 30, 68, 82, 17, 32, 24, 19]
+    }, {
+        cardNumber: 3,
+        winningNumbers: [1, 21, 53, 59, 44],
+        myNumbers: [69, 82, 63, 72, 16, 21, 14, 1]
+    }, {
+        cardNumber: 4,
+        winningNumbers: [41, 92, 73, 84, 69],
+        myNumbers: [59, 84, 76, 51, 58, 5, 54, 83]
+    }, {
+        cardNumber: 5,
+        winningNumbers: [87, 83, 26, 28, 32],
+        myNumbers: [88, 30, 70, 12, 93, 22, 82, 36]
+    }, {
+        cardNumber: 6,
+        winningNumbers: [31, 18, 13, 56, 72],
+        myNumbers: [74, 77, 10, 23, 35, 67, 36, 11]
+    }]
 
     const scratchcards = getWonCardCount(cards)
 
     expect(scratchcards.length).toEqual(24)
 })
-
 
 test('find all scratchcards', () => {
     const cards = `Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
@@ -113,7 +180,6 @@ test('find all scratchcards', () => {
 
     expect(scratchcards).toEqual(30)
 })
-
 
 test('part 2', () => {
     const cards = `Card   1: 59 65 20 66 55 92 43 23 98 70 | 99 81 56 30 88 55 57 11 90 45 53 28 33 20 84 54 24 64 74 98 36 77 61 82 69
