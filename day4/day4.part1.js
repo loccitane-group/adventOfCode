@@ -1,4 +1,4 @@
-function calculatePoints (card) {
+ function calculatePoints (card) {
     //Example of card : Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
 
     // Split card removing the first part "Card X:", then then an array of winning numbers separated by space, and then after a pipe the numbers we got separated by space

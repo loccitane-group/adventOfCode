@@ -1,5 +1,26 @@
 const { parseCards } = require('./day4.part1')
 
+function extractCardDetails(cardDocument) {
+
+    const cards = []
+
+    const cardLines = cardDocument.includes('\n') ? cardDocument.split('\n') : [cardDocument]
+
+    for (let i = 0; i < cardLines.length; i++) {
+        let cardNumber = cardLines[i].split(':')[0].trim().split(' ')[1]
+        let winningNumbers = cardLines[i].split(':')[1].split('|')[0].split(' ').filter(x => x).map(number => parseInt(number))
+        let myNumbers = cardLines[i].split(':')[1].split('|')[1].split(' ').filter(x => x).map(number => parseInt(number))
+
+        cards.push({
+            cardNumber: parseInt(cardNumber),
+            winningNumbers: winningNumbers,
+            myNumbers: myNumbers
+        })
+    }
+
+    return cards
+}
+
 function calculateMatches (card) {
     if (!card || !card.includes(':'))
         return 0 
@@ -89,6 +110,7 @@ function getAllScratchcards(cards) {
 
 
 module.exports = {
+    extractCardDetails,
     calculateMatches,
     getWinningCards,
     getWonCardCount,
