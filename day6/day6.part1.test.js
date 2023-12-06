@@ -32,7 +32,6 @@ test('find minimum milliseconds to win a race of 9 millimeter', () => {
     ])
 })
 
-
 test('find margin errors for multiple races', () => {
 
     const raceDocument = `Time:      7  15   30
@@ -41,4 +40,14 @@ test('find margin errors for multiple races', () => {
     const marginErrors = getMarginErrors(raceDocument)
 
     expect(marginErrors).toEqual(288)
+})
+
+test('part 1', () => {
+
+    const raceDocument = `Time:        48     93     85     95
+    Distance:   296   1928   1236   1391`
+
+    const marginErrors = getMarginErrors(raceDocument)
+
+    expect(marginErrors).toEqual(2756160)
 })
