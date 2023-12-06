@@ -383,5 +383,5 @@ test('part 2', () => {
 
     const scratchcards = getAllScratchcards(cards)
 
-    expect(scratchcards).toEqual(11719)
+    expect(scratchcards).toEqual(482331)
 })
