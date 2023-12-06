@@ -1,6 +1,10 @@
-const { getRaceDetails } = require('./day6.part1')
+const {
+    getRaceDetails,
+    getOptionsToWin,
+    getMarginErrors
+} = require('./day6.part1')
 
-test('race', () => {
+test('extract race details from race documents', () => {
     
     const raceDocument = `Time:      7  15   30
     Distance:  9  40  200`
@@ -12,4 +16,29 @@ test('race', () => {
         { time: 15, distance: 40 },
         { time: 30, distance: 200 }
     ])
+})
+
+test('find minimum milliseconds to win a race of 9 millimeter', () => {
+
+    const raceDetail = { time: 7, distance: 9 }
+
+    const optionsToWin = getOptionsToWin(raceDetail)
+
+    expect(optionsToWin).toEqual([
+        2,
+        3,
+        4,
+        5
+    ])
+})
+
+
+test('find margin errors for multiple races', () => {
+
+    const raceDocument = `Time:      7  15   30
+    Distance:  9  40  200`
+
+    const marginErrors = getMarginErrors(raceDocument)
+
+    expect(marginErrors).toEqual(288)
 })

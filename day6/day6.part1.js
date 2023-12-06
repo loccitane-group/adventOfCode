@@ -20,6 +20,38 @@ function getRaceDetails(raceDocument) {
     return raceDetails
 }
 
+function getOptionsToWin({ time, distance }) {
+    const optionsToWin = []
+
+    for (let consumedTime = 1; consumedTime < time; consumedTime++) {
+        let remainingTime = time-consumedTime
+
+        let traveledDistance = consumedTime * remainingTime
+
+        if (traveledDistance > distance) {
+            optionsToWin.push(consumedTime)
+        }
+    }
+
+    return optionsToWin
+}
+
+function getMarginErrors(raceDocument) {
+    const raceDetails = getRaceDetails(raceDocument)
+
+    let marginErrors = 1
+
+    for (const raceDetail of raceDetails) {
+        const optionsToWin = getOptionsToWin(raceDetail)
+
+        marginErrors *= optionsToWin.length
+    }
+
+    return marginErrors
+}
+
 module.exports = {
-    getRaceDetails
+    getRaceDetails,
+    getOptionsToWin,
+    getMarginErrors
 }
