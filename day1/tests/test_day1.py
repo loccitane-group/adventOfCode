@@ -1,4 +1,4 @@
-from main import extract_calibration, extract_first_number, is_number, extract_last_number, compute_all
+from day1.main import extract_calibration, extract_first_number, is_number, extract_last_number, compute_all
 
 EXAMPLE="""1abc2
 pqr3stu8vwx

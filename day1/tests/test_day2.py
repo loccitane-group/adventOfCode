@@ -1,4 +1,4 @@
-from main import is_number, extract_first_number, extract_last_number, extract_calibration, compute_all
+from day1.main import is_number, extract_first_number, extract_last_number, extract_calibration, compute_all
 
 
 class TestDay2:
