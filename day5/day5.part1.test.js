@@ -68,43 +68,50 @@ test('extract all maps from almanac', () => {
     expect(parsedAlmanac.maps.length).toBe(2)
 })
 
-test('calculate location of seed', () => {
-    const seedNumber = 79
-    const almanac = `seeds: 79 14 55 13
+describe('calculate location of seeds 70, 15, 55 and 13', () => {
+    it.each([
+        [79, 82],
+        [14, 43],
+        [55, 86],
+        [13, 35]
+    ])('when seed is %s, location is %s', (givenSeed, expectedLocation) => {
 
-    seed-to-soil map:
-    50 98 2
-    52 50 48
-    
-    soil-to-fertilizer map:
-    0 15 37
-    37 52 2
-    39 0 15
-    
-    fertilizer-to-water map:
-    49 53 8
-    0 11 42
-    42 0 7
-    57 7 4
-    
-    water-to-light map:
-    88 18 7
-    18 25 70
-    
-    light-to-temperature map:
-    45 77 23
-    81 45 19
-    68 64 13
-    
-    temperature-to-humidity map:
-    0 69 1
-    1 0 69
-    
-    humidity-to-location map:
-    60 56 37
-    56 93 4`
+        const almanac = `seeds: 79 14 55 13
 
-    const seedLocation = calculateLocation(seedNumber, almanac)
+        seed-to-soil map:
+        50 98 2
+        52 50 48
+        
+        soil-to-fertilizer map:
+        0 15 37
+        37 52 2
+        39 0 15
+        
+        fertilizer-to-water map:
+        49 53 8
+        0 11 42
+        42 0 7
+        57 7 4
+        
+        water-to-light map:
+        88 18 7
+        18 25 70
+        
+        light-to-temperature map:
+        45 77 23
+        81 45 19
+        68 64 13
+        
+        temperature-to-humidity map:
+        0 69 1
+        1 0 69
+        
+        humidity-to-location map:
+        60 56 37
+        56 93 4`
 
-    expect(seedLocation).toBe(82)
+        const foundLocation = calculateLocation(givenSeed, almanac)
+
+        expect(foundLocation).toBe(expectedLocation)
+    })
 })
