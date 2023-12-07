@@ -61,18 +61,31 @@ function parseMultipleMap(lines) {
             let [destinationRangeStart, sourceRangeStart, rangeLength] = digits.map(x => parseInt(x))
             let destinationRange = []
             let sourceRange = []
+            let sourceToDestinationMap = new Map()
+
+            // Unmapped sources numbers we put the same destination value
+            for (let i = 0; i < sourceRangeStart; i++) {
+                destinationRange.push(i)
+                sourceRange.push(i)
+
+                sourceToDestinationMap.set(i, i)
+            }
 
             for (let i = 0; i < rangeLength; i++) {
                 destinationRange.push(destinationRangeStart+i)
                 sourceRange.push(sourceRangeStart+i)
+
+                sourceToDestinationMap.set(sourceRangeStart+i, destinationRangeStart+i)
             }
+
             currentMap.rangesOfNumbers = currentMap.rangesOfNumbers || []
             currentMap.rangesOfNumbers.push({
                 destinationRangeStart,
                 destinationRange,
                 sourceRangeStart,
                 sourceRange,
-                rangeLength
+                rangeLength,
+                sourceToDestinationMap
             })
         }
 
