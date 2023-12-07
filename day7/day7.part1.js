@@ -12,6 +12,36 @@ function countOccurence(card, hand) {
     return hand.split('').filter(c => c === card).length
 }
 
+function countAllOccurence(hand) { 
+    const occurencesMap = new Map()
+
+    for (let i=0; i<hand.length; i++) {
+        const card = hand[i]
+        const occurence = countOccurence(card, hand)
+
+        occurencesMap.set(card, occurence)
+    }
+
+    return occurencesMap
+}
+
+function calculateStrength(hand) {
+    const occurencesMap = new Map()
+
+    for (let i=0; i<hand.length; i++) {
+        const card = hand[i]
+        const occurence = countOccurence(card, hand)
+
+        if (occurencesMap.has(card)) {
+            const previousOccurence = occurencesMap.get(card)
+            occurencesMap.set(card, previousOccurence + occurence)
+        }
+        else {
+            occurencesMap.set(card, occurence)
+        }
+    }
+}
+
 const HAND_STRENGTHS = {
     'Five of a Kind': 7,
     'Four of a Kind': 6,
@@ -41,5 +71,7 @@ const CARD_STRENGTHS = {
 module.exports = {
     extractHandsAndBids,
     HAND_STRENGTHS,
-    countOccurence
+    countOccurence,
+    countAllOccurence,
+    calculateStrength
 }

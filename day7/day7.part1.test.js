@@ -1,7 +1,9 @@
 const {
     HAND_STRENGTHS,
     extractHandsAndBids,
-    countOccurence
+    countOccurence,
+    countAllOccurence,
+    calculateStrength
 } = require('./day7.part1')
 
 test('extract hands and bids', () => {
@@ -44,6 +46,20 @@ test('count occurence of a card in a hand', () => {
     const occurence = countOccurence(card, hand)
 
     expect(occurence).toEqual(1)
+})
+
+test('count occurence of all cards in a hand', () => {
+    const hand = '32T3K'
+
+    const expectedOccurencesMap = new Map()
+    expectedOccurencesMap.set('3', 2)
+    expectedOccurencesMap.set('2', 1)
+    expectedOccurencesMap.set('T', 1)
+    expectedOccurencesMap.set('K', 1)
+
+    const occurences = countAllOccurence(hand)
+
+    expect(occurences).toEqual(expectedOccurencesMap)
 })
 
 test('caluclate strength of hand', () => {
