@@ -126,6 +126,19 @@ function orderByRank(hands) {
         }))
 }
 
+function calculateTotalWinnings(setOfHands) {
+    const rankedHands = orderByRank(setOfHands)
+
+    const totalWinnings = rankedHands.reduce((total, hand, index) => {
+        const bid = setOfHands.find(h => h.hand === hand.hand).bid
+        const winnings = bid * (index + 1)
+
+        return total + winnings
+    }, 0)
+
+    return totalWinnings
+}
+
 module.exports = {
     extractHandsAndBids,
     HAND_STRENGTHS,
@@ -133,5 +146,6 @@ module.exports = {
     countAllOccurence,
     calculateStrength,
     orderByRank,
-    compareHands
+    compareHands,
+    calculateTotalWinnings
 }
