@@ -93,28 +93,37 @@ function compareHands(handA, handB) {
             continue
         }
 
-        return CARD_STRENGTHS[cardA] - CARD_STRENGTHS[cardB]
+        if(CARD_STRENGTHS[cardA] > CARD_STRENGTHS[cardB]) {
+            return 1
+        }
+
+        if(CARD_STRENGTHS[cardA] < CARD_STRENGTHS[cardB]) {
+            return -1
+        }
     }
 
     return 0
 }
 
 function orderByRank(hands) {
-    return hands.map(hand => hand.hand)
+    const handsWithStrength = hands.map(hand => hand.hand)
         .map(hand => {
             return {
                 hand,
                 strength: calculateStrength(hand)
             }
         })
-        .sort((a, b) => {
+    const sortedHands = handsWithStrength.sort((a, b) => {
             if (a.strength === b.strength) {
-                return compareHands(a.hand, b.hand)
+                return compareHands(a, b)
             }
 
-            return b.strength - a.strength
+            return a.strength - b.strength
         })
-        .map((hand, index) => index + 1)
+        
+    return sortedHands.map(hand => ({
+            hand: hand.hand
+        }))
 }
 
 module.exports = {

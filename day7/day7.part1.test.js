@@ -114,5 +114,21 @@ test('calculate ranks of multiple hands', () => {
 
     const ranks = orderByRank(hands)
 
-    expect(ranks).toEqual([1, 2, 3, 4, 5])
+    expect(ranks).toEqual([
+        {
+            hand: '32T3K',
+        },
+        {
+            hand: 'KTJJT',
+        },
+        {
+            hand: 'KK677',
+        },
+        {
+            hand: 'T55J5',
+        },
+        {
+            hand: 'QQQJA',
+        }
+    ])
 })
