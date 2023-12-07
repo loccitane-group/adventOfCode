@@ -26,20 +26,21 @@ function countAllOccurence(hand) {
 }
 
 function calculateStrength(hand) {
-    const occurencesMap = new Map()
 
-    for (let i=0; i<hand.length; i++) {
-        const card = hand[i]
-        const occurence = countOccurence(card, hand)
+    const allCardOccurences = countAllOccurence(hand)
 
-        if (occurencesMap.has(card)) {
-            const previousOccurence = occurencesMap.get(card)
-            occurencesMap.set(card, previousOccurence + occurence)
-        }
-        else {
-            occurencesMap.set(card, occurence)
-        }
+    if (allCardOccurences.size === 1) {
+        return HAND_STRENGTHS['Five of a Kind']
     }
+
+    if (allCardOccurences.size === 5) {
+        return HAND_STRENGTHS['High Card']
+    }
+
+    if (allCardOccurences.size === 4) {
+        return HAND_STRENGTHS['One Pair']
+    }
+    
 }
 
 const HAND_STRENGTHS = {

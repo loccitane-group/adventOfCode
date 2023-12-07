@@ -62,8 +62,24 @@ test('count occurence of all cards in a hand', () => {
     expect(occurences).toEqual(expectedOccurencesMap)
 })
 
-test('caluclate strength of hand', () => {
-    const hand = '32T3K'
+test('calculate strength of hand of five similar cards', () => {
+    const hand = 'AAAAA'
+
+    const strength = calculateStrength(hand)
+
+    expect(strength).toEqual(HAND_STRENGTHS['Five of a Kind'])
+})
+
+test('calculate strength of hand of five different cards', () => {
+    const hand = '23456'
+
+    const strength = calculateStrength(hand)
+
+    expect(strength).toEqual(HAND_STRENGTHS['High Card'])
+})
+
+test('calculate strength of hand of with two similar cards', () => {
+    const hand = 'A23A4'
 
     const strength = calculateStrength(hand)
 
