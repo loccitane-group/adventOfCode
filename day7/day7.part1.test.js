@@ -65,10 +65,12 @@ test('count occurence of all cards in a hand', () => {
 describe('Strength calculation', () => {
     it.each([
         ['AAAAA', HAND_STRENGTHS['Five of a Kind']],
-        ['23456', HAND_STRENGTHS['High Card']],
-        ['A23A4', HAND_STRENGTHS['One Pair']],
         ['AA8AA', HAND_STRENGTHS['Four of a Kind']],
         ['23332', HAND_STRENGTHS['Full House']],
+        ['TTT98', HAND_STRENGTHS['Three of a Kind']],
+        ['23432', HAND_STRENGTHS['Two Pairs']],
+        ['A23A4', HAND_STRENGTHS['One Pair']],
+        ['23456', HAND_STRENGTHS['High Card']]
     ])('calculate strength of hand %s', (hand, expectedStrength) => {
         const strength = calculateStrength(hand)
 

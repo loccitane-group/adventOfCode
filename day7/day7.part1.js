@@ -33,14 +33,14 @@ function calculateStrength(hand) {
         return HAND_STRENGTHS['Five of a Kind']
     }
 
-    if (allCardOccurences.size === 5) {
-        return HAND_STRENGTHS['High Card']
-    }
+    if (allCardOccurences.size === 3) {
+        if ([...allCardOccurences.entries()].filter(([card, occurence]) => occurence === 2).length === 2)  {
+            return HAND_STRENGTHS['Two Pairs']
+        }
 
-    if (allCardOccurences.size === 4) {
-        return HAND_STRENGTHS['One Pair']
+        return HAND_STRENGTHS['Three of a Kind']
     }
-
+    
     if (allCardOccurences.size === 2) {
         if ([...allCardOccurences.entries()].filter(([card, occurence]) => occurence === 3).length === 1)  {
             return HAND_STRENGTHS['Full House']
@@ -48,7 +48,14 @@ function calculateStrength(hand) {
 
         return HAND_STRENGTHS['Four of a Kind']
     }
-    
+
+    if (allCardOccurences.size === 5) {
+        return HAND_STRENGTHS['High Card']
+    }
+
+    if (allCardOccurences.size === 4) {
+        return HAND_STRENGTHS['One Pair']
+    }
 }
 
 const HAND_STRENGTHS = {
