@@ -40,6 +40,14 @@ function calculateStrength(hand) {
     if (allCardOccurences.size === 4) {
         return HAND_STRENGTHS['One Pair']
     }
+
+    if (allCardOccurences.size === 2) {
+        if ([...allCardOccurences.entries()].filter(([card, occurence]) => occurence === 3).length === 1)  {
+            return HAND_STRENGTHS['Full House']
+        }
+
+        return HAND_STRENGTHS['Four of a Kind']
+    }
     
 }
 

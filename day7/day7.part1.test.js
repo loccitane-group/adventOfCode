@@ -62,26 +62,16 @@ test('count occurence of all cards in a hand', () => {
     expect(occurences).toEqual(expectedOccurencesMap)
 })
 
-test('calculate strength of hand of five similar cards', () => {
-    const hand = 'AAAAA'
+describe('Strength calculation', () => {
+    it.each([
+        ['AAAAA', HAND_STRENGTHS['Five of a Kind']],
+        ['23456', HAND_STRENGTHS['High Card']],
+        ['A23A4', HAND_STRENGTHS['One Pair']],
+        ['AA8AA', HAND_STRENGTHS['Four of a Kind']],
+        ['23332', HAND_STRENGTHS['Full House']],
+    ])('calculate strength of hand %s', (hand, expectedStrength) => {
+        const strength = calculateStrength(hand)
 
-    const strength = calculateStrength(hand)
-
-    expect(strength).toEqual(HAND_STRENGTHS['Five of a Kind'])
-})
-
-test('calculate strength of hand of five different cards', () => {
-    const hand = '23456'
-
-    const strength = calculateStrength(hand)
-
-    expect(strength).toEqual(HAND_STRENGTHS['High Card'])
-})
-
-test('calculate strength of hand of with two similar cards', () => {
-    const hand = 'A23A4'
-
-    const strength = calculateStrength(hand)
-
-    expect(strength).toEqual(HAND_STRENGTHS['One Pair'])
+        expect(strength).toEqual(expectedStrength)
+    })
 })
