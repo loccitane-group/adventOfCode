@@ -1,4 +1,8 @@
-const { extractHandsAndBids } = require('./day7.part1')
+const {
+    HAND_STRENGTHS,
+    extractHandsAndBids,
+    countOccurence
+} = require('./day7.part1')
 
 test('extract hands and bids', () => {
     const input = `32T3K 765
@@ -31,4 +35,21 @@ test('extract hands and bids', () => {
             bid: '483'
         }
     ])
+})
+
+test('count occurence of a card in a hand', () => {
+    const card = 'T'
+    const hand = '32T3K'
+
+    const occurence = countOccurence(card, hand)
+
+    expect(occurence).toEqual(1)
+})
+
+test('caluclate strength of hand', () => {
+    const hand = '32T3K'
+
+    const strength = calculateStrength(hand)
+
+    expect(strength).toEqual(HAND_STRENGTHS['One Pair'])
 })
