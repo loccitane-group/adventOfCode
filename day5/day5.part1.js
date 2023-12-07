@@ -59,37 +59,35 @@ function parseMultipleMap(lines) {
         else if (containsDigits(line)) {
             let digits = line.split(' ').map(x => x.trim()).filter(x => x)
             let [destinationRangeStart, sourceRangeStart, rangeLength] = digits.map(x => parseInt(x))
-            let destinationRange = []
-            let sourceRange = []
-            let sourceToDestinationMap = new Map()
-
-            // Unmapped sources numbers we put the same destination value
-            for (let i = 0; i < sourceRangeStart; i++) {
-                destinationRange.push(i)
-                sourceRange.push(i)
-
-                sourceToDestinationMap.set(i, i)
-            }
+            currentMap.sourceToDestinationMap = currentMap.sourceToDestinationMap || new Map(   )
 
             for (let i = 0; i < rangeLength; i++) {
-                destinationRange.push(destinationRangeStart+i)
-                sourceRange.push(sourceRangeStart+i)
-
-                sourceToDestinationMap.set(sourceRangeStart+i, destinationRangeStart+i)
+                currentMap.sourceToDestinationMap.set(sourceRangeStart+i, destinationRangeStart+i)
             }
-
             currentMap.rangesOfNumbers = currentMap.rangesOfNumbers || []
             currentMap.rangesOfNumbers.push({
                 destinationRangeStart,
-                destinationRange,
                 sourceRangeStart,
-                sourceRange,
-                rangeLength,
-                sourceToDestinationMap
+                rangeLength
             })
         }
 
         else {
+
+            // Order currentMap.rangesOfNumbers.SourceToDestination by key
+            currentMap.sourceToDestinationMap = new Map([...currentMap.sourceToDestinationMap].sort())
+
+            // Find the lowest key of currentMap.rangesOfNumbers.sourceToDestinationMap
+            const smallestSourceRangeStart = currentMap.sourceToDestinationMap.keys().next().value
+
+            // Unmapped sources numbers we put the same destination value
+            for (let i = 0; i < smallestSourceRangeStart; i++) {
+                currentMap.sourceToDestinationMap.set(i, i)
+            }
+
+            // Sort again once all the numbers are in
+            currentMap.sourceToDestinationMap = new Map([...currentMap.sourceToDestinationMap].sort())
+
             maps.push(currentMap)
             currentMap = {}
         }
@@ -114,8 +112,29 @@ function parseAlmanac(almanac) {
     }
 }
 
+function calculateLocation(seedNumber, almanac) {
+    const { seeds, maps } = parseAlmanac(almanac)
+
+    const seed = seeds.find(x => x.seed === seedNumber)
+
+    let currentNumber = seed.seed
+
+    for (let i = 0; i < maps.length; i++) {
+        const map = maps[i]
+
+        const sourceToDestinationMap = map.sourceToDestinationMap
+
+        if (sourceToDestinationMap.get(currentNumber)) {
+            currentNumber = sourceToDestinationMap.get(currentNumber)
+        }
+    }
+
+    return currentNumber
+}
+
 module.exports = {
     extractSeeds,
     extractSingleMap, 
     parseAlmanac,
+    calculateLocation
 }
