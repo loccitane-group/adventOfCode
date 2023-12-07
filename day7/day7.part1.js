@@ -84,10 +84,45 @@ const CARD_STRENGTHS = {
     '2': 2
 }
 
+function compareHands(handA, handB) {
+    for (let i=0; i<handA.hand.length; i++) {
+        const cardA = handA.hand[i]
+        const cardB = handB.hand[i]
+
+        if (CARD_STRENGTHS[cardA] === CARD_STRENGTHS[cardB]) {
+            continue
+        }
+
+        return CARD_STRENGTHS[cardA] - CARD_STRENGTHS[cardB]
+    }
+
+    return 0
+}
+
+function orderByRank(hands) {
+    return hands.map(hand => hand.hand)
+        .map(hand => {
+            return {
+                hand,
+                strength: calculateStrength(hand)
+            }
+        })
+        .sort((a, b) => {
+            if (a.strength === b.strength) {
+                return compareHands(a.hand, b.hand)
+            }
+
+            return b.strength - a.strength
+        })
+        .map((hand, index) => index + 1)
+}
+
 module.exports = {
     extractHandsAndBids,
     HAND_STRENGTHS,
     countOccurence,
     countAllOccurence,
-    calculateStrength
+    calculateStrength,
+    orderByRank,
+    compareHands
 }

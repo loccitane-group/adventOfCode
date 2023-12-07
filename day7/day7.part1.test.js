@@ -3,7 +3,9 @@ const {
     extractHandsAndBids,
     countOccurence,
     countAllOccurence,
-    calculateStrength
+    calculateStrength,
+    compareHands,
+    orderByRank
 } = require('./day7.part1')
 
 test('extract hands and bids', () => {
@@ -76,4 +78,41 @@ describe('Strength calculation', () => {
 
         expect(strength).toEqual(expectedStrength)
     })
+})
+
+test('compare two pair hands', () => { 
+    const handA = {
+        hand: 'KK677',
+    }
+    const handB = {
+        hand: 'KTJJT',
+    }
+
+    const isAGreaterThanB = compareHands(handA, handB) > 0
+
+    expect(isAGreaterThanB).toEqual(true)
+})
+
+test('calculate ranks of multiple hands', () => {
+    const hands = [
+        {
+            hand: '32T3K',
+        },
+        {
+            hand: 'T55J5',
+        },
+        {
+            hand: 'KK677',
+        },
+        {
+            hand: 'KTJJT',
+        },
+        {
+            hand: 'QQQJA',
+        }
+    ]
+
+    const ranks = orderByRank(hands)
+
+    expect(ranks).toEqual([1, 2, 3, 4, 5])
 })
