@@ -56,7 +56,7 @@ function extractSeedsFromRanges(seedRanges) {
         }
     }
 
-    return seeds.sort()
+    return seeds
 }
 
 module.exports = {
