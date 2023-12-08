@@ -59,11 +59,7 @@ function parseMultipleMap(lines) {
         else if (containsDigits(line)) {
             let digits = line.split(' ').map(x => x.trim()).filter(x => x)
             let [destinationRangeStart, sourceRangeStart, rangeLength] = digits.map(x => parseInt(x))
-            currentMap.sourceToDestinationMap = currentMap.sourceToDestinationMap || new Map(   )
 
-            for (let i = 0; i < rangeLength; i++) {
-                currentMap.sourceToDestinationMap.set(sourceRangeStart+i, destinationRangeStart+i)
-            }
             currentMap.rangesOfNumbers = currentMap.rangesOfNumbers || []
             currentMap.rangesOfNumbers.push({
                 destinationRangeStart,
@@ -73,21 +69,6 @@ function parseMultipleMap(lines) {
         }
 
         else {
-
-            // Order currentMap.rangesOfNumbers.SourceToDestination by key
-            currentMap.sourceToDestinationMap = new Map([...currentMap.sourceToDestinationMap].sort())
-
-            // Find the lowest key of currentMap.rangesOfNumbers.sourceToDestinationMap
-            const smallestSourceRangeStart = currentMap.sourceToDestinationMap.keys().next().value
-
-            // Unmapped sources numbers we put the same destination value
-            for (let i = 0; i < smallestSourceRangeStart; i++) {
-                currentMap.sourceToDestinationMap.set(i, i)
-            }
-
-            // Sort again once all the numbers are in
-            currentMap.sourceToDestinationMap = new Map([...currentMap.sourceToDestinationMap].sort())
-
             maps.push(currentMap)
             currentMap = {}
         }
@@ -115,18 +96,25 @@ function parseAlmanac(almanac) {
 function calculateLocation(seedNumber, almanac) {
     const { seeds, maps } = parseAlmanac(almanac)
 
-    const seed = seeds.find(x => x.seed === seedNumber)
-
-    let currentNumber = seed.seed
+    let currentNumber = seedNumber
 
     for (let i = 0; i < maps.length; i++) {
         const map = maps[i]
 
-        const sourceToDestinationMap = map.sourceToDestinationMap
+        let nextLocationFound = false
 
-        if (sourceToDestinationMap.get(currentNumber)) {
-            currentNumber = sourceToDestinationMap.get(currentNumber)
-        }
+        // sort the map by sourceRangeStart
+        map.rangesOfNumbers = map.rangesOfNumbers.sort((a, b) => a.sourceRangeStart - b.sourceRangeStart)
+
+        map.rangesOfNumbers.forEach(range => {
+            if (nextLocationFound)
+                return
+
+            if (range.sourceRangeStart <= currentNumber && currentNumber <= range.sourceRangeStart + range.rangeLength - 1) {
+                currentNumber = range.destinationRangeStart + currentNumber - range.sourceRangeStart
+                nextLocationFound = true
+            }
+        })
     }
 
     return currentNumber
@@ -151,7 +139,6 @@ function findLowestLocation(almanac) {
     }
 
     return lowestLocation
-
 }
 
 module.exports = {
