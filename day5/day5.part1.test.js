@@ -111,7 +111,9 @@ describe('calculate location of seeds 70, 15, 55 and 13', () => {
         60 56 37
         56 93 4`
 
-        const foundLocation = calculateLocation(givenSeed, almanac)
+        const { seeds, maps } = parseAlmanac(almanac)
+
+        const foundLocation = calculateLocation(givenSeed, maps)
 
         expect(foundLocation).toBe(expectedLocation)
     })
@@ -152,7 +154,9 @@ test('find the lowest location', () => {
         60 56 37
         56 93 4`
 
-    const lowestLocation = findLowestLocation(almanac)
+    const { seeds, maps } = parseAlmanac(almanac)
+
+    const lowestLocation = findLowestLocation(seeds, maps)
 
     expect(lowestLocation).toBe(35)
 })
@@ -356,7 +360,8 @@ test('part 1', () => {
     4290148707 4270667962 4818589
     3519755810 2075729027 14826879`
 
-    const lowestLocation = findLowestLocation(almanac)
+    const { seeds, maps } = parseAlmanac(almanac)
+    const lowestLocation = findLowestLocation(seeds, maps)
 
     expect(lowestLocation).toBe(218513636)
 })

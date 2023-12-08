@@ -1,3 +1,17 @@
+const {
+    parseMultipleMap
+} = require('./day5.part1')
+
+function parseAlmanac(almanac) {
+    const lines = almanac.split('\n').filter(x => x)
+    const seedRanges = extractSeedsRanges(lines[0])
+    const maps = parseMultipleMap(lines.slice(1))
+
+    return {
+        seedRanges,
+        maps
+    }
+}
 function extractSeedsRanges(almanac) {
     const seeds = almanac.split('seeds: ')[1].split(' ')
 
@@ -36,7 +50,9 @@ function extractSeedsFromRanges(seedRanges) {
         const seedRange = seedRanges[i]
 
         for(let j=seedRange.rangeStart; j<=seedRange.rangeEnd; j++) {
-            seeds.push(j)
+            seeds.push({
+                seed: j
+            })
         }
     }
 
@@ -45,5 +61,6 @@ function extractSeedsFromRanges(seedRanges) {
 
 module.exports = {
     extractSeedsRanges,
-    extractSeedsFromRanges
+    extractSeedsFromRanges,
+    parseAlmanac
 }

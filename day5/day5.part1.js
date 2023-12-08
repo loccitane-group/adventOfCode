@@ -93,8 +93,7 @@ function parseAlmanac(almanac) {
     }
 }
 
-function calculateLocation(seedNumber, almanac) {
-    const { seeds, maps } = parseAlmanac(almanac)
+function calculateLocation(seedNumber, maps) {
 
     let currentNumber = seedNumber
 
@@ -120,15 +119,13 @@ function calculateLocation(seedNumber, almanac) {
     return currentNumber
 }
 
-function findLowestLocation(almanac) {
-    const { seeds, maps } = parseAlmanac(almanac)
-
+function findLowestLocation(seeds, maps) {
     let lowestLocation = null
 
     for (let i = 0; i < seeds.length; i++) {
         const seed = seeds[i]
 
-        const location = calculateLocation(seed.seed, almanac)
+        const location = calculateLocation(seed.seed, maps)
 
         if (!lowestLocation) {
             lowestLocation = location
@@ -146,5 +143,6 @@ module.exports = {
     extractSingleMap, 
     parseAlmanac,
     calculateLocation,
-    findLowestLocation
+    findLowestLocation,
+    parseMultipleMap
 }
