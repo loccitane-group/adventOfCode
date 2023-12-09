@@ -22,7 +22,14 @@ function findNextLeftPosition(maps, position) {
     return nextPosition
 }
 
+function findNextRightPosition(maps, position) {
+    const map = parseMap(maps)
+    const nextPosition = map.network[position].right
+    return nextPosition
+}
+
 module.exports = {
     parseMap,
-    findNextLeftPosition
+    findNextLeftPosition,
+    findNextRightPosition
 }

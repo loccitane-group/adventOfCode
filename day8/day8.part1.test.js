@@ -1,6 +1,7 @@
 const {
     parseMap,
-    findNextLeftPosition
+    findNextLeftPosition,
+    findNextRightPosition
 } = require('./day8.part1')
 
 test('parse map', () => {
@@ -42,5 +43,17 @@ test('find next left position', () => {
     const nextPosition = findNextLeftPosition(maps, 'AAA')
 
     expect(nextPosition).toBe('BBB')
-    
+})
+
+test('find next right position', () => {
+    const maps = `LLR
+
+    AAA = (BBB, BBB)
+    BBB = (AAA, ZZZ)
+    ZZZ = (ZZZ, ZZZ)
+    `
+
+    const nextPosition = findNextRightPosition(maps, 'AAA')
+
+    expect(nextPosition).toBe('BBB')
 })
