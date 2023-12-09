@@ -61,21 +61,34 @@ test('count occurence of all cards in hand QQQJA', () => {
 })
 
 
-// describe('Strength calculation', () => {
-//     it.each([
-//         ['AAAAA', HAND_STRENGTHS['Five of a Kind']],
-//         ['AA8AA', HAND_STRENGTHS['Four of a Kind']],
-//         ['23332', HAND_STRENGTHS['Full House']],
-//         ['TTT98', HAND_STRENGTHS['Three of a Kind']],
-//         ['23432', HAND_STRENGTHS['Two Pairs']],
-//         ['A23A4', HAND_STRENGTHS['One Pair']],
-//         ['23456', HAND_STRENGTHS['High Card']]
-//     ])('calculate strength of hand %s', (hand, expectedStrength) => {
-//         const strength = calculateStrength(hand)
+describe('Strength calculation', () => {
+    it.each([
+        ['AAAAA', HAND_STRENGTHS['Five of a Kind']],
+        ['AA8AA', HAND_STRENGTHS['Four of a Kind']],
+        ['23332', HAND_STRENGTHS['Full House']],
+        ['TTT98', HAND_STRENGTHS['Three of a Kind']],
+        ['23432', HAND_STRENGTHS['Two Pairs']],
+        ['A23A4', HAND_STRENGTHS['One Pair']],
+        ['23456', HAND_STRENGTHS['High Card']],
+    ])('calculate strength of hand %s', (hand, expectedStrength) => {
+        const strength = calculateStrength(hand)
 
-//         expect(strength).toEqual(expectedStrength)
-//     })
-// })
+        expect(strength).toEqual(expectedStrength)
+    })
+})
+
+
+describe('Strength calculation with Joker cards', () => {
+    it.each([
+        ['T55J5', HAND_STRENGTHS['Four of a Kind']],
+        ['KTJJT', HAND_STRENGTHS['Four of a Kind']],
+        ['QQQJA', HAND_STRENGTHS['Four of a Kind']],
+    ])('calculate strength of hand %s', (hand, expectedStrength) => {
+        const strength = calculateStrength(hand)
+
+        expect(strength).toEqual(expectedStrength)
+    })
+})
 
 // test('calculate ranks of multiple hands', () => {
 //     const hands = [
