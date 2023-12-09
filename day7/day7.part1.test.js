@@ -163,7 +163,6 @@ test('calculate total winnings of set of hands', () => {
     expect(totalWinnings).toEqual(6440)
 })
 
-
 test('part 1', () => {
     const input = `486AA 252
     24544 330
