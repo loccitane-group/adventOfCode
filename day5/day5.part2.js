@@ -1,5 +1,6 @@
 const {
-    parseMultipleMap
+    parseMultipleMap,
+    calculateLocation
 } = require('./day5.part1')
 
 function parseAlmanac(almanac) {
@@ -59,8 +60,31 @@ function extractSeedsFromRanges(seedRanges) {
     return seeds
 }
 
+
+function findLowestLocation(seedRanges, maps) {
+    let lowestLocation = null
+
+    for (let i = 0; i < seedRanges.length; i++) {
+        const seedRange = seedRanges[i]
+
+        for(let j=seedRange.rangeStart; j<=seedRange.rangeEnd; j++) {
+            const location = calculateLocation(j, maps)
+
+            if (!lowestLocation) {
+                lowestLocation = location
+            }
+            else if (location < lowestLocation) {
+                lowestLocation = location
+            }
+        }
+    }
+
+    return lowestLocation
+}
+
 module.exports = {
     extractSeedsRanges,
     extractSeedsFromRanges,
-    parseAlmanac
+    parseAlmanac,
+    findLowestLocation
 }

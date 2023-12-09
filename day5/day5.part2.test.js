@@ -1,11 +1,8 @@
 const {
-    findLowestLocation
-} = require('./day5.part1')
-
-const {
     parseAlmanac,
     extractSeedsRanges,
-    extractSeedsFromRanges
+    extractSeedsFromRanges,
+    findLowestLocation
 } = require('./day5.part2')
 
 test('extract seeds numbers from seed ranges', () => {
@@ -83,9 +80,9 @@ test('find lowest location with ranges of seeds', () => {
 
     const { seedRanges, maps } = parseAlmanac(almanac)
 
-    const seeds = extractSeedsFromRanges(seedRanges)
+    //const seeds = extractSeedsFromRanges(seedRanges)
 
-    const lowestLocation = findLowestLocation(seeds, maps)
+    const lowestLocation = findLowestLocation(seedRanges, maps)
 
     expect(lowestLocation).toBe(46)
 })
@@ -291,9 +288,7 @@ test('find lowest location with ranges of seeds', () => {
 
     const { seedRanges, maps } = parseAlmanac(almanac)
 
-    const seeds = extractSeedsFromRanges(seedRanges)
+    const lowestLocation = findLowestLocation(seedRanges, maps)
 
-    const lowestLocation = findLowestLocation(seeds, maps)
-
-    expect(lowestLocation).toBe(999)
+    expect(lowestLocation).toBe(81956384)
 })
