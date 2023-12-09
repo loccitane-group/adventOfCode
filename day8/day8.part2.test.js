@@ -1,6 +1,7 @@
 const {
     parseMap,
-    findStartingNodes
+    findStartingNodes,
+    findEndingNodes
 } = require('./day8.part2')
 
 
@@ -99,4 +100,50 @@ test('find starting nodes', () => {
     const startingNodes = findStartingNodes(map.network)
 
     return expect(startingNodes).toEqual(['11A', '22A'])
+})
+
+
+
+test('find ending nodes', () => {
+    const map = {
+        directions: 'LR',
+        network: {
+            '11A': {
+                left: '11B',
+                right: 'XXX'
+            },
+            '11B': {
+                left: 'XXX',
+                right: '11Z'
+            },
+            '11Z': {
+                left: '11B',
+                right: 'XXX'
+            },
+            '22A': {
+                left: '22B',
+                right: 'XXX'
+            },
+            '22B': {
+                left: '22C',
+                right: '22C'
+            },
+            '22C': {
+                left: '22Z',
+                right: '22Z'
+            },
+            '22Z': {
+                left: '22B',
+                right: '22B'
+            },
+            'XXX': {
+                left: 'XXX',
+                right: 'XXX'
+            }
+        }
+    }
+
+    const startingNodes = findEndingNodes(map.network)
+
+    return expect(startingNodes).toEqual(['11Z', '22Z'])
 })

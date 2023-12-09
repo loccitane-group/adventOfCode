@@ -62,6 +62,13 @@ function findStartingNodes(network) {
         .map(([key, value]) => key)
 }
 
+function findEndingNodes(network) {
+    return Object.entries(network)
+        .filter(([position, leftRight]) => position.endsWith('Z'))
+        .map(([key, value]) => key)
+
+}
+
 module.exports = {
     parseMap,
     findNextLeftPosition,
@@ -69,5 +76,6 @@ module.exports = {
     STARTING_POSITION,
     ENDING_POSITION,
     navigate,
-    findStartingNodes
+    findStartingNodes,
+    findEndingNodes
 }
