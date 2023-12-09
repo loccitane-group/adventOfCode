@@ -14,12 +14,24 @@ function countOccurence(card, hand) {
 
 function countAllOccurence(hand) { 
     const occurencesMap = new Map()
+    let maxOccurenceCard = null
 
     for (let i=0; i<hand.length; i++) {
         const card = hand[i]
         const occurence = countOccurence(card, hand)
 
+        if (card !== 'J' && (maxOccurenceCard === null
+            || occurence > occurencesMap.get(maxOccurenceCard))) {
+            maxOccurenceCard = card
+        }
+
         occurencesMap.set(card, occurence)
+    }
+
+    // If there is any joker, convert it into the max occurence card and recalculate
+    if (occurencesMap.has('J')) {
+        occurencesMap.set(maxOccurenceCard, occurencesMap.get(maxOccurenceCard) + occurencesMap.get('J'))
+        occurencesMap.delete('J')
     }
 
     return occurencesMap
