@@ -90,72 +90,72 @@ describe('Strength calculation with Joker cards', () => {
     })
 })
 
-// test('calculate ranks of multiple hands', () => {
-//     const hands = [
-//         {
-//             hand: '32T3K',
-//         },
-//         {
-//             hand: 'T55J5',
-//         },
-//         {
-//             hand: 'KK677',
-//         },
-//         {
-//             hand: 'KTJJT',
-//         },
-//         {
-//             hand: 'QQQJA',
-//         }
-//     ]
+test('calculate ranks of multiple hands', () => {
+    const hands = [
+        {
+            hand: '32T3K',
+        },
+        {
+            hand: 'T55J5',
+        },
+        {
+            hand: 'KK677',
+        },
+        {
+            hand: 'KTJJT',
+        },
+        {
+            hand: 'QQQJA',
+        }
+    ]
 
-//     const ranks = orderByRank(hands)
+    const ranks = orderByRank(hands)
 
-//     expect(ranks).toEqual([
-//         {
-//             hand: '32T3K',
-//         },
-//         {
-//             hand: 'KTJJT',
-//         },
-//         {
-//             hand: 'KK677',
-//         },
-//         {
-//             hand: 'T55J5',
-//         },
-//         {
-//             hand: 'QQQJA',
-//         }
-//     ])
-// })
+    expect(ranks).toEqual([
+        {
+            hand: '32T3K',
+        },
+        {
+            hand: 'KK677',
+        },
+        {
+            hand: 'T55J5',
+        },
+        {
+            hand: 'QQQJA',
+        },
+        {
+            hand: 'KTJJT',
+        }        
+    ])
+})
 
-// test('calculate total winnings of set of hands', () => {
-//     const setOfHands = [
-//         {
-//             hand: '32T3K',
-//             bid: '765'
-//         },
-//         {
-//             hand: 'T55J5',
-//             bid: '684'
-//         },
-//         {
-//             hand: 'KK677',
-//             bid: '28'
-//         },
-//         {
-//             hand: 'KTJJT',
-//             bid: '220'
-//         },
-//         {
-//             hand: 'QQQJA',
-//             bid: '483'
-//         }
-//     ]
+test('calculate total winnings of set of hands', () => {
+    const setOfHands = [
+        {
+            hand: '32T3K',
+            bid: '765'
+        },
+        {
+            hand: 'T55J5',
+            bid: '684'
+        },
+        {
+            hand: 'KK677',
+            bid: '28'
+        },
+        {
+            hand: 'KTJJT',
+            bid: '220'
+        },
+        {
+            hand: 'QQQJA',
+            bid: '483'
+        }
+    ]
 
-//     const totalWinnings = calculateTotalWinnings(setOfHands)
+    const totalWinnings = calculateTotalWinnings(setOfHands)
 
-//     expect(totalWinnings).toEqual(6440)
-// })
+    expect(totalWinnings).toEqual(5905)
+})
 
