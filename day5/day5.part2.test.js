@@ -80,8 +80,6 @@ test('find lowest location with ranges of seeds', () => {
 
     const { seedRanges, maps } = parseAlmanac(almanac)
 
-    //const seeds = extractSeedsFromRanges(seedRanges)
-
     const lowestLocation = findLowestLocation(seedRanges, maps)
 
     expect(lowestLocation).toBe(46)

@@ -13,6 +13,7 @@ function parseAlmanac(almanac) {
         maps
     }
 }
+
 function extractSeedsRanges(almanac) {
     const seeds = almanac.split('seeds: ')[1].split(' ')
 
@@ -60,27 +61,57 @@ function extractSeedsFromRanges(seedRanges) {
     return seeds
 }
 
-
 function findLowestLocation(seedRanges, maps) {
-    let lowestLocation = null
+    let lowestLocationsPerRange = []
 
     for (let i = 0; i < seedRanges.length; i++) {
         const seedRange = seedRanges[i]
 
-        for(let j=seedRange.rangeStart; j<=seedRange.rangeEnd; j++) {
-            const location = calculateLocation(j, maps)
-
-            if (!lowestLocation) {
-                lowestLocation = location
-            }
-            else if (location < lowestLocation) {
-                lowestLocation = location
-            }
-        }
+        lowestLocationsPerRange.push(
+            Array.from(
+                    { length: seedRange.rangeLength },
+                    (_, i) => seedRange.rangeStart + i
+                )
+                .map(seed => calculateLocation(seed, maps))
+                .reduce((lowestLocation, location) => {
+                    if (!lowestLocation) {
+                        return location
+                    }
+        
+                    if (location < lowestLocation) {
+                        return location
+                    }
+        
+                    return lowestLocation
+                }, null))
     }
 
-    return lowestLocation
+    return Math.min(...lowestLocationsPerRange)
 }
+
+// function findLowestLocation(seedRanges, maps) {
+//     return seedRanges
+//         .flatMap(seedRange => {
+//             return Array.from(
+//                 { length: seedRange.rangeLength },
+//                 (_, i) => seedRange.rangeStart + i
+//             )
+//         })
+//         .map(seed => calculateLocation(seed, maps))
+//         .reduce((lowestLocation, location) => {
+//             if (!lowestLocation) {
+//                 return location
+//             }
+
+//             if (location < lowestLocation) {
+//                 return location
+//             }
+
+//             return lowestLocation
+//         }, null)
+// }
+
+
 
 module.exports = {
     extractSeedsRanges,
