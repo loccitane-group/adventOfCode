@@ -5,7 +5,8 @@ const {
 const {
     findStartingNodes,
     findEndingNodes,
-    navigate
+    stepsPerPath,
+    commonShortestPath
 } = require('./day8.part2')
 
 test('parse map', () => {
@@ -166,12 +167,21 @@ test('navigate with multiple starting positions', () => {
     const startingNodes = findStartingNodes(network)
     const endingNodes = findEndingNodes(network)
 
-    const stepsPerPath = navigate(directions, network, startingNodes, endingNodes)
+    const paths = stepsPerPath(directions, network, startingNodes, endingNodes)
 
     const expectedMap = new Map()
     expectedMap.set('11A', 2)
     expectedMap.set('22A', 3)
 
-    expect(stepsPerPath).toEqual(expectedMap)  
+    expect(paths).toEqual(expectedMap)  
 })
 
+test('find the shortest common number of steps accross all paths', () => { 
+    const stepsPerPath = new Map()
+    stepsPerPath.set('11A', 2)
+    stepsPerPath.set('22A', 3)
+
+    const commonShortestPathSteps = commonShortestPath(stepsPerPath)
+
+    expect(commonShortestPathSteps).toEqual(6)  
+})

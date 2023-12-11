@@ -1,11 +1,4 @@
-const {
-    findNextLeftPosition,
-    findNextRightPosition,
-    STARTING_POSITION,
-    ENDING_POSITION,
-} = require('./day8.part1')
-
-function navigate(directions, network, startingPositions, endingPositions) {
+function stepsPerPath(directions, network, startingPositions, endingPositions) {
     let stepsPerPath = new Map()
 
     for (let i=0; i<startingPositions.length; i++) {
@@ -51,11 +44,33 @@ function findEndingNodes(network) {
     return Object.entries(network)
         .filter(([position, leftRight]) => position.endsWith('Z'))
         .map(([key, value]) => key)
+}
 
+// Use the mathematic formula to compute the least common multiplier between all
+// steps required for each path
+function commonShortestPath(stepsPerPath) {
+    let steps = Array.from(stepsPerPath.values())
+    let lcm = steps[0]
+
+    for (let i=1; i<steps.length; i++) {
+        lcm = lcm * steps[i] / gcd(lcm, steps[i])
+    }
+
+    return lcm
+}
+
+// Thank you copilot
+function gcd(a, b) {
+    if (b === 0) {
+        return a
+    }
+
+    return gcd(b, a % b)
 }
 
 module.exports = {
-    navigate,
+    stepsPerPath,
     findStartingNodes,
-    findEndingNodes
+    findEndingNodes,
+    commonShortestPath
 }
