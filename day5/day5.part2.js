@@ -89,30 +89,6 @@ function findLowestLocation(seedRanges, maps) {
     return Math.min(...lowestLocationsPerRange)
 }
 
-// function findLowestLocation(seedRanges, maps) {
-//     return seedRanges
-//         .flatMap(seedRange => {
-//             return Array.from(
-//                 { length: seedRange.rangeLength },
-//                 (_, i) => seedRange.rangeStart + i
-//             )
-//         })
-//         .map(seed => calculateLocation(seed, maps))
-//         .reduce((lowestLocation, location) => {
-//             if (!lowestLocation) {
-//                 return location
-//             }
-
-//             if (location < lowestLocation) {
-//                 return location
-//             }
-
-//             return lowestLocation
-//         }, null)
-// }
-
-
-
 module.exports = {
     extractSeedsRanges,
     extractSeedsFromRanges,
