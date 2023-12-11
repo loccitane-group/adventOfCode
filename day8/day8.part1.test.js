@@ -40,10 +40,11 @@ test('find next left position', () => {
 
     AAA = (BBB, BBB)
     BBB = (AAA, ZZZ)
-    ZZZ = (ZZZ, ZZZ)
-    `
+    ZZZ = (ZZZ, ZZZ)`
+    
+    const { network } = parseMap(maps)
 
-    const nextPosition = findNextLeftPosition(maps, STARTING_POSITION)
+    const nextPosition = findNextLeftPosition(network, STARTING_POSITION)
 
     expect(nextPosition).toBe('BBB')
 })
@@ -53,10 +54,11 @@ test('find next right position', () => {
 
     AAA = (BBB, BBB)
     BBB = (AAA, ZZZ)
-    ZZZ = (ZZZ, ZZZ)
-    `
+    ZZZ = (ZZZ, ZZZ)`
 
-    const nextPosition = findNextRightPosition(maps, STARTING_POSITION)
+    const { network } = parseMap(maps)
+
+    const nextPosition = findNextRightPosition(network, STARTING_POSITION)
 
     expect(nextPosition).toBe('BBB')
 })

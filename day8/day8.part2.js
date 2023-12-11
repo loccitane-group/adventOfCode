@@ -1,60 +1,45 @@
-function parseMap(maps) {
-    const [directions, ...network] = maps.split('\n').map(line => line.trim()).filter(line => line.length > 0)
-    const networkMap = network.reduce((map, line) => {
-        const [position, leftRightPositions] = line.split('=').map(item => item.trim())
-        const [left, right] = leftRightPositions.replace(/\(|\)/g, '').split(',').map(item => item.trim())
-        map[position] = {
-            left,
-            right
-        }
-        return map
-    }, {})
-    return {
-        directions,
-        network: networkMap
-    }
-}
+const {
+    findNextLeftPosition,
+    findNextRightPosition,
+    STARTING_POSITION,
+    ENDING_POSITION,
+} = require('./day8.part1')
 
-function findNextLeftPosition(maps, position) {
-    const map = parseMap(maps)
-    const nextPosition = map.network[position].left
-    return nextPosition
-}
+function navigate(directions, network, startingPositions, endingPositions) {
+    let stepsPerPath = new Map()
 
-function findNextRightPosition(maps, position) {
-    const map = parseMap(maps)
-    const nextPosition = map.network[position].right
-    return nextPosition
-}
+    for (let i=0; i<startingPositions.length; i++) {
+        let currentPosition = startingPositions[i]
 
-function navigate(directions, network, startingPosition, endingPosition) {
-    let currentPosition = startingPosition
-    let numberOfSteps = 0
+        let numberOfSteps = 0
 
-    for (let i=0; i<directions.length; i++) {
-        numberOfSteps++
-        const direction = directions[i]
-        if (direction === 'L') {
-            currentPosition = network[currentPosition].left
-        } else {
-            currentPosition = network[currentPosition].right
-        }
+        for (let j=0; j<directions.length; j++) {
 
-        // if we are at the last iteration and we are still not at the ending position
-        // start over the same loop until we reach the ending position
-        if (i === directions.length - 1 && currentPosition !== endingPosition) {
-            i = -1
-        }
+            numberOfSteps++
+            const direction = directions[j]
+            if (direction === 'L') {
+                currentPosition = network[currentPosition].left
+            } else {
+                currentPosition = network[currentPosition].right
+            }
 
-        if (currentPosition === endingPosition) {
-            return numberOfSteps
+
+            // if we are at the last iteration and we are still not at the ending position
+            // start over the same loop until we reach the ending position
+            if (j === directions.length - 1 && !endingPositions.includes(currentPosition)) {
+                j = -1
+            }
+
+            if (endingPositions.includes(currentPosition)) {
+                stepsPerPath.set(startingPositions[i], numberOfSteps)
+                
+                break
+            }
         }
     }
-    return currentPosition
-}
 
-STARTING_POSITION = 'AAA'
-ENDING_POSITION = 'ZZZ'
+    return stepsPerPath
+}
 
 function findStartingNodes(network) {
     return Object.entries(network)
@@ -70,11 +55,6 @@ function findEndingNodes(network) {
 }
 
 module.exports = {
-    parseMap,
-    findNextLeftPosition,
-    findNextRightPosition,
-    STARTING_POSITION,
-    ENDING_POSITION,
     navigate,
     findStartingNodes,
     findEndingNodes

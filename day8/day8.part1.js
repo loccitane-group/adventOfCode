@@ -15,15 +15,13 @@ function parseMap(maps) {
     }
 }
 
-function findNextLeftPosition(maps, position) {
-    const map = parseMap(maps)
-    const nextPosition = map.network[position].left
+function findNextLeftPosition(network, position) {
+    const nextPosition = network[position].left
     return nextPosition
 }
 
-function findNextRightPosition(maps, position) {
-    const map = parseMap(maps)
-    const nextPosition = map.network[position].right
+function findNextRightPosition(network, position) {
+    const nextPosition = network[position].right
     return nextPosition
 }
 
