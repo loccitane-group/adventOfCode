@@ -12,6 +12,21 @@ function mapTiles(tiles) {
     return map
 }
 
+function findStartingPosition(tiles) {
+    const map = mapTiles(tiles)
+
+    for (let [position, tile] of map.entries()) {
+        if (tile === 'S') {
+            const [x, y] = position.split(',').map(x => parseInt(x))
+            return {
+                x,
+                y
+            }
+        }
+    }
+}
+
 module.exports = {
-    mapTiles
+    mapTiles,
+    findStartingPosition
 }

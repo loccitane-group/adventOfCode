@@ -1,5 +1,6 @@
 const {
-    mapTiles
+    mapTiles,
+    findStartingPosition
 } = require('./day10.part1')
 
 test('map tiles into a 2D grid with their axis X and Y and the type of object inside', () => {
@@ -24,4 +25,20 @@ test('map tiles into a 2D grid with their axis X and Y and the type of object in
     expectedMap.set('3,3', 'J')
 
     expect(map).toEqual(expectedMap)
+})
+
+test('find starting position in a grid', () => {
+    const tiles = 
+    `.....
+    .S-7.
+    .|.|.
+    .L-J.
+    .....`
+
+    const startingPosition = findStartingPosition(tiles)
+
+    expect(startingPosition).toEqual({
+        x: 1,
+        y: 1
+    })
 })
