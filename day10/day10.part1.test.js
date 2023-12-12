@@ -1,9 +1,17 @@
 const {
     mapTiles,
-    findStartingPosition,
-    findNextPipePosition
+    findTilePosition,
+    findNextPipePosition,
+    TILE
 } = require('./day10.part1')
 
+/*
+.....
+.F-7.
+.|.|.
+.L-J.
+.....
+*/
 test('map tiles into a 2D grid with their axis X and Y and the type of object inside', () => {
     const tiles = 
     `.....
@@ -16,56 +24,112 @@ test('map tiles into a 2D grid with their axis X and Y and the type of object in
 
     const expectedMap = new Map()
 
-    expectedMap.set('1,1', 'F')
-    expectedMap.set('2,1', '-')
-    expectedMap.set('3,1', '7')
-    expectedMap.set('1,2', '|')
-    expectedMap.set('3,2', '|')
-    expectedMap.set('1,3', 'L')
-    expectedMap.set('2,3', '-')
-    expectedMap.set('3,3', 'J')
+    expectedMap.set('1,1', TILE.PIPE.BEND_SOUTH_EAST)
+    expectedMap.set('2,1', TILE.PIPE.HORIZONTAL_EAST_WEST)
+    expectedMap.set('3,1', TILE.PIPE.BEND_SOUTH_WEST)
+    expectedMap.set('1,2', TILE.PIPE.VERTICAL_NORTH_SOUTH)
+    expectedMap.set('3,2', TILE.PIPE.VERTICAL_NORTH_SOUTH)
+    expectedMap.set('1,3', TILE.PIPE.BEND_NORTH_EAST)
+    expectedMap.set('2,3', TILE.PIPE.HORIZONTAL_EAST_WEST)
+    expectedMap.set('3,3', TILE.PIPE.BEND_NORTH_WEST)
 
     expect(map).toEqual(expectedMap)
 })
 
+/*
+.....
+.S-7.
+.|.|.
+.L-J.
+.....
+*/
 test('find starting position in a grid', () => {
     const grid = new Map()
 
-    grid.set('1,1', 'S')
-    grid.set('2,1', '-')
-    grid.set('3,1', '7')
-    grid.set('1,2', '|')
-    grid.set('3,2', '|')
-    grid.set('1,3', 'L')
-    grid.set('2,3', '-')
-    grid.set('3,3', 'J')
+    grid.set('1,1', TILE.STARTING)
+    grid.set('2,1', TILE.PIPE.HORIZONTAL_EAST_WEST)
+    grid.set('3,1', TILE.PIPE.BEND_SOUTH_WEST)
+    grid.set('1,2', TILE.PIPE.VERTICAL_NORTH_SOUTH)
+    grid.set('3,2', TILE.PIPE.VERTICAL_NORTH_SOUTH)
+    grid.set('1,3', TILE.PIPE.BEND_NORTH_EAST)
+    grid.set('2,3', TILE.PIPE.HORIZONTAL_EAST_WEST)
+    grid.set('3,3', TILE.PIPE.BEND_NORTH_WEST)
 
-    const startingPosition = findStartingPosition(grid)
+    const startingPosition = findTilePosition(TILE.STARTING, grid)
 
     expect(startingPosition).toEqual({
-        x: 1,
-        y: 1
+        tile: TILE.STARTING,
+        position: {
+            x: 1,
+            y: 1
+        }
     })
 })
 
+/*
+.....
+.S-7.
+.|.|.
+.L-J.
+.....
+*/
 test('find next position in a grid', () => {
     const grid = new Map()
 
-    grid.set('1,1', 'S')
-    grid.set('2,1', '-')
-    grid.set('3,1', '7')
-    grid.set('1,2', '|')
-    grid.set('3,2', '|')
-    grid.set('1,3', 'L')
-    grid.set('2,3', '-')
-    grid.set('3,3', 'J')
+    grid.set('1,1', TILE.STARTING)
+    grid.set('2,1', TILE.PIPE.HORIZONTAL_EAST_WEST)
+    grid.set('3,1', TILE.PIPE.BEND_SOUTH_WEST)
+    grid.set('1,2', TILE.PIPE.VERTICAL_NORTH_SOUTH)
+    grid.set('3,2', TILE.PIPE.VERTICAL_NORTH_SOUTH)
+    grid.set('1,3', TILE.PIPE.BEND_NORTH_EAST)
+    grid.set('2,3', TILE.PIPE.HORIZONTAL_EAST_WEST)
+    grid.set('3,3', TILE.PIPE.BEND_NORTH_WEST)
 
-    const startingPosition = findStartingPosition(grid)
+    const startingTile = findTilePosition(TILE.STARTING, grid)
+    const previousTile = {
+        tile: TILE.PIPE.VERTICAL_NORTH_SOUTH,
+        position: {
+            x: 1,
+            y: 2
+        }
+    }
 
-    const nextPosition = findNextPipePosition(grid, startingPosition)
+    const nextPosition = findNextPipePosition(grid, startingTile, previousTile)
 
     expect(nextPosition).toEqual({
-        x: 2,
-        y: 1
+        tile: TILE.PIPE.HORIZONTAL_EAST_WEST,
+        position: {
+            x: 2,
+            y: 1
+        }
+    })
+})
+
+test('find next position in a grid with many unconnected pipes', () => {
+    const tiles = 
+`-L|F7
+ 7S-7|
+ L|7||
+ -L-J|
+ L|-JF`
+
+    const grid = mapTiles(tiles)
+
+    const startingTile = findTilePosition(TILE.STARTING, grid)
+    const previousTile = {
+        tile: TILE.PIPE.VERTICAL_NORTH_SOUTH,
+        position: {
+            x: 1,
+            y: 2
+        }
+    }
+    const nextPosition = findNextPipePosition(grid, startingTile, previousTile)
+
+    expect(nextPosition).toEqual({
+        tile: TILE.PIPE.HORIZONTAL_EAST_WEST,
+        position: {
+            x: 2,
+            y: 1
+        }
     })
 })
