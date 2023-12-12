@@ -16,7 +16,7 @@ function findStartingPosition(tiles) {
     const map = mapTiles(tiles)
 
     for (let [position, tile] of map.entries()) {
-        if (tile === 'S') {
+        if (tile === PIPE.STARTING) {
             const [x, y] = position.split(',').map(x => parseInt(x))
             return {
                 x,
@@ -25,6 +25,18 @@ function findStartingPosition(tiles) {
         }
     }
 }
+
+const PIPE = {
+    STARTING: 'S',
+    VERTICAL_NORTH_SOUTH: '|',
+    HORIZONTAL_EAST_WEST: '-',
+    BEND_NORTH_EAST: 'L',
+    BEND_NORTH_WEST: 'J',
+    BEND_SOUTH_WEST: '7',
+    BEND_SOUTH_EAST: 'F',
+    GROUND: '.'
+}
+
 
 module.exports = {
     mapTiles,
