@@ -28,17 +28,25 @@ test('map tiles into a 2D grid with their axis X and Y and the type of object in
 })
 
 test('find starting position in a grid', () => {
-    const tiles = 
-    `.....
-    .S-7.
-    .|.|.
-    .L-J.
-    .....`
+    const grid = new Map()
 
-    const startingPosition = findStartingPosition(tiles)
+    grid.set('1,1', 'S')
+    grid.set('2,1', '-')
+    grid.set('3,1', '7')
+    grid.set('1,2', '|')
+    grid.set('3,2', '|')
+    grid.set('1,3', 'L')
+    grid.set('2,3', '-')
+    grid.set('3,3', 'J')
+
+    const startingPosition = findStartingPosition(grid)
 
     expect(startingPosition).toEqual({
         x: 1,
         y: 1
     })
+})
+
+test('find next position in a grid', () => {
+
 })

@@ -12,9 +12,7 @@ function mapTiles(tiles) {
     return map
 }
 
-function findStartingPosition(tiles) {
-    const map = mapTiles(tiles)
-
+function findStartingPosition(map) {
     for (let [position, tile] of map.entries()) {
         if (tile === PIPE.STARTING) {
             const [x, y] = position.split(',').map(x => parseInt(x))
