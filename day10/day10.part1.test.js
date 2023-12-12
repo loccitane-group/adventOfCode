@@ -1,6 +1,7 @@
 const {
     mapTiles,
-    findStartingPosition
+    findStartingPosition,
+    findNextPipePosition
 } = require('./day10.part1')
 
 test('map tiles into a 2D grid with their axis X and Y and the type of object inside', () => {
@@ -48,5 +49,23 @@ test('find starting position in a grid', () => {
 })
 
 test('find next position in a grid', () => {
+    const grid = new Map()
 
+    grid.set('1,1', 'S')
+    grid.set('2,1', '-')
+    grid.set('3,1', '7')
+    grid.set('1,2', '|')
+    grid.set('3,2', '|')
+    grid.set('1,3', 'L')
+    grid.set('2,3', '-')
+    grid.set('3,3', 'J')
+
+    const startingPosition = findStartingPosition(grid)
+
+    const nextPosition = findNextPipePosition(grid, startingPosition)
+
+    expect(nextPosition).toEqual({
+        x: 2,
+        y: 1
+    })
 })
