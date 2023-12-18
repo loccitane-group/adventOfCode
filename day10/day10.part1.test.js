@@ -2,7 +2,9 @@ const {
     mapTiles,
     findTilePosition,
     findNextPipePosition,
-    TILE
+    TILE,
+    findAllNextTiles,
+    getAllowedConnectingPipes
 } = require('./day10.part1')
 
 /*
@@ -66,6 +68,113 @@ test('find starting position in a grid', () => {
     })
 })
 
+describe('allowed connecting pipes', () => {
+
+    it.each([
+        [TILE.PIPE.VERTICAL_NORTH_SOUTH, {
+            north: [
+                TILE.PIPE.VERTICAL_NORTH_SOUTH,
+                TILE.PIPE.BEND_NORTH_WEST,
+                TILE.PIPE.BEND_NORTH_EAST,
+            ],
+    
+            south: [
+                TILE.PIPE.VERTICAL_NORTH_SOUTH,
+                TILE.PIPE.BEND_SOUTH_WEST,
+                TILE.PIPE.BEND_SOUTH_EAST,
+            ],
+    
+            east: [],
+            west: []
+        }],
+
+        [TILE.PIPE.HORIZONTAL_EAST_WEST, {
+            north: [],
+            south: [],
+    
+            east: [
+                TILE.PIPE.HORIZONTAL_EAST_WEST,
+                TILE.PIPE.BEND_NORTH_EAST,
+                TILE.PIPE.BEND_SOUTH_EAST,
+            ],
+            west: [
+                TILE.PIPE.HORIZONTAL_EAST_WEST,
+                TILE.PIPE.BEND_NORTH_WEST,
+                TILE.PIPE.BEND_SOUTH_WEST,
+            ]
+        }],
+
+        [TILE.PIPE.BEND_NORTH_EAST, {
+            north: [
+                TILE.PIPE.VERTICAL_NORTH_SOUTH,
+                TILE.PIPE.BEND_NORTH_WEST,
+                TILE.PIPE.BEND_NORTH_EAST,
+            ],
+    
+            south: [],
+    
+            east: [
+                TILE.PIPE.HORIZONTAL_EAST_WEST,
+                TILE.PIPE.BEND_NORTH_EAST,
+                TILE.PIPE.BEND_SOUTH_EAST,
+            ],
+            west: []
+        }],
+
+        [TILE.PIPE.BEND_NORTH_WEST, {
+            north: [
+                TILE.PIPE.VERTICAL_NORTH_SOUTH,
+                TILE.PIPE.BEND_NORTH_WEST,
+                TILE.PIPE.BEND_NORTH_EAST,
+            ],
+    
+            south: [],
+            east: [],
+
+            west: [
+                TILE.PIPE.HORIZONTAL_EAST_WEST,
+                TILE.PIPE.BEND_NORTH_WEST,
+                TILE.PIPE.BEND_SOUTH_WEST,
+            ]
+        }],
+
+        [TILE.PIPE.BEND_SOUTH_WEST, {
+            north: [],
+            south: [
+                TILE.PIPE.VERTICAL_NORTH_SOUTH,
+                TILE.PIPE.BEND_SOUTH_WEST,
+                TILE.PIPE.BEND_SOUTH_EAST,
+            ],
+            east: [],
+
+            west: [
+                TILE.PIPE.HORIZONTAL_EAST_WEST,
+                TILE.PIPE.BEND_NORTH_WEST,
+                TILE.PIPE.BEND_SOUTH_WEST,
+            ]
+        }],
+
+        [TILE.PIPE.BEND_SOUTH_EAST, {
+            north: [],
+            south: [
+                TILE.PIPE.VERTICAL_NORTH_SOUTH,
+                TILE.PIPE.BEND_SOUTH_WEST,
+                TILE.PIPE.BEND_SOUTH_EAST,
+            ],
+            east: [
+                TILE.PIPE.HORIZONTAL_EAST_WEST,
+                TILE.PIPE.BEND_NORTH_EAST,
+                TILE.PIPE.BEND_SOUTH_EAST,
+            ],
+            west: []
+        }],
+
+    ])('from %s', (currentPipe, expectedAllowedPipes) => {
+        const allowedPipes = getAllowedConnectingPipes(currentPipe)
+    
+        expect(allowedPipes).toEqual(expectedAllowedPipes)
+    })
+})
 /*
 .....
 .S-7.
@@ -133,3 +242,30 @@ test('find next position in a grid with many unconnected pipes', () => {
         }
     })
 })
+
+
+// test('find all the next connected pipes until reach starting tile', () => {
+//     const tiles = 
+// `-L|F7
+//  7S-7|
+//  L|7||
+//  -L-J|
+//  L|-JF`
+
+//     const grid = mapTiles(tiles)
+
+//     const startingTile = findTilePosition(TILE.STARTING, grid)
+//     const previousTile = {
+//         tile: TILE.PIPE.VERTICAL_NORTH_SOUTH,
+//         position: {
+//             x: 1,
+//             y: 2
+//         }
+//     }
+
+//     const allNextTiles = findAllNextTiles(grid, startingTile, previousTile)
+
+//     expect(allNextTiles.length).toBe(6)
+
+
+// })

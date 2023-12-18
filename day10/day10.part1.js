@@ -94,8 +94,7 @@ function findNextPipePosition(grid, currentTile, previousTile) {
     tilesToLookup = tilesToLookup
                     .filter(tile => tile.tile !== TILE.GROUND)
                     .filter(tile => tile.tile !== previousTile.tile
-                        && tile.position.x !== previousTile.position.x
-                        && tile.position.y !== previousTile.position.y)
+                        && tile.position !== previousTile.position)
                     .filter(tile => tile.allowedNextTile.includes(tile.tile))
 
     return {
@@ -104,9 +103,95 @@ function findNextPipePosition(grid, currentTile, previousTile) {
     }
 }
 
+function findAllNextTiles(grid, currentTile, previousTile) {
+
+    let allNextTiles = []
+
+    let nextPipe = findNextPipePosition(grid, currentTile, previousTile)
+
+    while (nextPipe.tile !== TILE.STARTING) {
+        allNextTiles.push(nextPipe)
+
+        nextPipe = findNextPipePosition(grid, nextPipe, currentTile)
+    }
+}
+
+function getAllowedConnectingPipes(currentPipe) {
+    const allowedPipes = {
+        north: [],
+        south: [],
+        east: [],
+        west: []
+    }
+
+    switch (currentPipe) {
+        case TILE.PIPE.VERTICAL_NORTH_SOUTH:
+            allowedPipes.north.push(TILE.PIPE.VERTICAL_NORTH_SOUTH)
+            allowedPipes.south.push(TILE.PIPE.VERTICAL_NORTH_SOUTH)
+            allowedPipes.north.push(TILE.PIPE.BEND_NORTH_WEST)
+            allowedPipes.north.push(TILE.PIPE.BEND_NORTH_EAST)
+            allowedPipes.south.push(TILE.PIPE.BEND_SOUTH_WEST)
+            allowedPipes.south.push(TILE.PIPE.BEND_SOUTH_EAST)
+            break
+
+        case TILE.PIPE.HORIZONTAL_EAST_WEST:
+            allowedPipes.east.push(TILE.PIPE.HORIZONTAL_EAST_WEST)
+            allowedPipes.west.push(TILE.PIPE.HORIZONTAL_EAST_WEST)
+            allowedPipes.east.push(TILE.PIPE.BEND_NORTH_EAST)
+            allowedPipes.east.push(TILE.PIPE.BEND_SOUTH_EAST)
+            allowedPipes.west.push(TILE.PIPE.BEND_NORTH_WEST)
+            allowedPipes.west.push(TILE.PIPE.BEND_SOUTH_WEST)
+            break
+
+        case TILE.PIPE.BEND_NORTH_EAST:
+            allowedPipes.north.push(TILE.PIPE.VERTICAL_NORTH_SOUTH)
+            allowedPipes.north.push(TILE.PIPE.BEND_NORTH_WEST)
+            allowedPipes.north.push(TILE.PIPE.BEND_NORTH_EAST)
+
+            allowedPipes.east.push(TILE.PIPE.HORIZONTAL_EAST_WEST)
+            allowedPipes.east.push(TILE.PIPE.BEND_NORTH_EAST)
+            allowedPipes.east.push(TILE.PIPE.BEND_SOUTH_EAST)
+            break
+
+        case TILE.PIPE.BEND_NORTH_WEST:
+            allowedPipes.north.push(TILE.PIPE.VERTICAL_NORTH_SOUTH)
+            allowedPipes.north.push(TILE.PIPE.BEND_NORTH_WEST)
+            allowedPipes.north.push(TILE.PIPE.BEND_NORTH_EAST)
+
+            allowedPipes.west.push(TILE.PIPE.HORIZONTAL_EAST_WEST)
+            allowedPipes.west.push(TILE.PIPE.BEND_NORTH_WEST)
+            allowedPipes.west.push(TILE.PIPE.BEND_SOUTH_WEST)
+            break
+
+        case TILE.PIPE.BEND_SOUTH_WEST:
+            allowedPipes.south.push(TILE.PIPE.VERTICAL_NORTH_SOUTH)
+            allowedPipes.south.push(TILE.PIPE.BEND_SOUTH_WEST)
+            allowedPipes.south.push(TILE.PIPE.BEND_SOUTH_EAST)
+
+            allowedPipes.west.push(TILE.PIPE.HORIZONTAL_EAST_WEST)
+            allowedPipes.west.push(TILE.PIPE.BEND_NORTH_WEST)
+            allowedPipes.west.push(TILE.PIPE.BEND_SOUTH_WEST)
+            break
+
+        case TILE.PIPE.BEND_SOUTH_EAST:
+            allowedPipes.south.push(TILE.PIPE.VERTICAL_NORTH_SOUTH)
+            allowedPipes.south.push(TILE.PIPE.BEND_SOUTH_WEST)
+            allowedPipes.south.push(TILE.PIPE.BEND_SOUTH_EAST)
+
+            allowedPipes.east.push(TILE.PIPE.HORIZONTAL_EAST_WEST)
+            allowedPipes.east.push(TILE.PIPE.BEND_NORTH_EAST)
+            allowedPipes.east.push(TILE.PIPE.BEND_SOUTH_EAST)
+            break
+        }
+
+    return allowedPipes
+}
+
 module.exports = {
     mapTiles,
     findTilePosition,
     findNextPipePosition,
-    TILE
+    TILE,
+    findAllNextTiles,
+    getAllowedConnectingPipes
 }
