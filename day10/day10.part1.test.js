@@ -4,7 +4,8 @@ const {
     findNextPipePosition,
     TILE,
     findAllNextTiles,
-    getAllowedConnectingPipes
+    getAllowedConnectingPipes,
+    computeFarthestSteps
 } = require('./day10.part1')
 
 /*
@@ -306,6 +307,60 @@ test('find all the next connected pipes until reach starting tile', () => {
     const allNextTiles = findAllNextTiles(grid, startingTile, previousTile)
 
     expect(allNextTiles.length).toBe(6)
+})
 
+describe('find farest number of steps to reach starting point', () => {
 
+    it.each([
+        [`-L|F7
+        7S-7|
+        L|7||
+        -L-J|
+        L|-JF`,
+        {
+            tile: TILE.PIPE.HORIZONTAL_EAST_WEST,
+            position: {
+                x: 2,
+                y: 1
+            }
+        },
+        {
+            tile: TILE.STARTING,
+            position: {
+                x: 1,
+                y: 1
+            }
+        },
+        4],
+        
+        [`..F7.
+        .FJ|.
+        SJ.L7
+        |F--J
+        LJ...`,
+        {
+            tile: TILE.PIPE.BEND_NORTH_WEST,
+            position: {
+                x: 1,
+                y: 2
+            }
+        },
+        {
+            tile: TILE.STARTING,
+            position: {
+                x: 0,
+                y: 2
+            }
+        },
+        8]
+    ])(`for %s grid expect %s farthest step`, (tiles, startingTile, previousTile, expectedSteps) => {
+        const grid = mapTiles(tiles)
+
+        const allNextTiles = findAllNextTiles(grid, startingTile, previousTile)
+        const steps = allNextTiles.length
+    
+        const farthestSteps = computeFarthestSteps(steps)
+    
+        expect(farthestSteps).toBe(expectedSteps)
+    })
 })

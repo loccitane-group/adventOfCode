@@ -114,9 +114,10 @@ function findNextPipePosition(grid, currentTile, previousTile) {
     })
 
     let foundTiles = allowedNextTiles
+                    // exclude ground
                     .filter(tile => tile.tile !== TILE.GROUND)
-                    .filter(tile => tile.tile !== previousTile.tile
-                        && tile.position !== previousTile.position)
+                    // exclude previous tile
+                    .filter(tile => !(tile.tile === previousTile.tile && tile.position.x === previousTile.position.x && tile.position.y === previousTile.position.y))
 
     return {
         tile: foundTiles[0].tile,
@@ -219,11 +220,20 @@ function getAllowedConnectingPipes(currentPipe) {
     return allowedPipes
 }
 
+function computeFarthestSteps(steps) {
+    const FIRST_STEP = 1
+
+    const LAST_STEP = 1
+
+    return (steps + FIRST_STEP + LAST_STEP) / 2
+}
+
 module.exports = {
     mapTiles,
     findTilePosition,
     findNextPipePosition,
     TILE,
     findAllNextTiles,
-    getAllowedConnectingPipes
+    getAllowedConnectingPipes,
+    computeFarthestSteps
 }
