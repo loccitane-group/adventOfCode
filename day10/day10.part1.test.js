@@ -73,100 +73,112 @@ describe('allowed connecting pipes', () => {
     it.each([
         [TILE.PIPE.VERTICAL_NORTH_SOUTH, {
             north: [
+                TILE.STARTING,
                 TILE.PIPE.VERTICAL_NORTH_SOUTH,
-                TILE.PIPE.BEND_NORTH_WEST,
-                TILE.PIPE.BEND_NORTH_EAST,
+                TILE.PIPE.BEND_SOUTH_WEST,
+                TILE.PIPE.BEND_SOUTH_EAST,
             ],
     
             south: [
+                TILE.STARTING,
                 TILE.PIPE.VERTICAL_NORTH_SOUTH,
-                TILE.PIPE.BEND_SOUTH_WEST,
-                TILE.PIPE.BEND_SOUTH_EAST,
+                TILE.PIPE.BEND_NORTH_WEST,
+                TILE.PIPE.BEND_NORTH_EAST,
             ],
     
-            east: [],
-            west: []
+            east: [TILE.STARTING,],
+            west: [TILE.STARTING,]
         }],
 
         [TILE.PIPE.HORIZONTAL_EAST_WEST, {
-            north: [],
-            south: [],
+            north: [TILE.STARTING,],
+            south: [TILE.STARTING,],
     
             east: [
-                TILE.PIPE.HORIZONTAL_EAST_WEST,
-                TILE.PIPE.BEND_NORTH_EAST,
-                TILE.PIPE.BEND_SOUTH_EAST,
-            ],
-            west: [
+                TILE.STARTING,
                 TILE.PIPE.HORIZONTAL_EAST_WEST,
                 TILE.PIPE.BEND_NORTH_WEST,
                 TILE.PIPE.BEND_SOUTH_WEST,
+            ],
+            west: [
+                TILE.STARTING,
+                TILE.PIPE.HORIZONTAL_EAST_WEST,
+                TILE.PIPE.BEND_NORTH_EAST,
+                TILE.PIPE.BEND_SOUTH_EAST,
             ]
         }],
 
         [TILE.PIPE.BEND_NORTH_EAST, {
             north: [
+                TILE.STARTING,
                 TILE.PIPE.VERTICAL_NORTH_SOUTH,
-                TILE.PIPE.BEND_NORTH_WEST,
-                TILE.PIPE.BEND_NORTH_EAST,
-            ],
-    
-            south: [],
-    
-            east: [
-                TILE.PIPE.HORIZONTAL_EAST_WEST,
-                TILE.PIPE.BEND_NORTH_EAST,
+                TILE.PIPE.BEND_SOUTH_WEST,
                 TILE.PIPE.BEND_SOUTH_EAST,
             ],
-            west: []
+    
+            south: [TILE.STARTING,],
+    
+            east: [
+                TILE.STARTING,
+                TILE.PIPE.HORIZONTAL_EAST_WEST,
+                TILE.PIPE.BEND_NORTH_WEST,
+                TILE.PIPE.BEND_SOUTH_WEST,
+            ],
+            west: [TILE.STARTING,]
         }],
 
         [TILE.PIPE.BEND_NORTH_WEST, {
             north: [
+                TILE.STARTING,
                 TILE.PIPE.VERTICAL_NORTH_SOUTH,
-                TILE.PIPE.BEND_NORTH_WEST,
-                TILE.PIPE.BEND_NORTH_EAST,
+                TILE.PIPE.BEND_SOUTH_WEST,
+                TILE.PIPE.BEND_SOUTH_EAST,
             ],
     
-            south: [],
-            east: [],
+            south: [TILE.STARTING,],
+            east: [TILE.STARTING,],
 
             west: [
+                TILE.STARTING,
                 TILE.PIPE.HORIZONTAL_EAST_WEST,
-                TILE.PIPE.BEND_NORTH_WEST,
-                TILE.PIPE.BEND_SOUTH_WEST,
+                TILE.PIPE.BEND_NORTH_EAST,
+                TILE.PIPE.BEND_SOUTH_EAST,
             ]
         }],
 
         [TILE.PIPE.BEND_SOUTH_WEST, {
-            north: [],
+            north: [TILE.STARTING,],
             south: [
+                TILE.STARTING,
                 TILE.PIPE.VERTICAL_NORTH_SOUTH,
-                TILE.PIPE.BEND_SOUTH_WEST,
-                TILE.PIPE.BEND_SOUTH_EAST,
+                TILE.PIPE.BEND_NORTH_WEST,
+                TILE.PIPE.BEND_NORTH_EAST,
             ],
-            east: [],
+            east: [TILE.STARTING,],
 
             west: [
+                TILE.STARTING,
                 TILE.PIPE.HORIZONTAL_EAST_WEST,
-                TILE.PIPE.BEND_NORTH_WEST,
-                TILE.PIPE.BEND_SOUTH_WEST,
+                TILE.PIPE.BEND_NORTH_EAST,
+                TILE.PIPE.BEND_SOUTH_EAST,
             ]
         }],
 
         [TILE.PIPE.BEND_SOUTH_EAST, {
-            north: [],
+            north: [TILE.STARTING,],
             south: [
+                TILE.STARTING,
                 TILE.PIPE.VERTICAL_NORTH_SOUTH,
-                TILE.PIPE.BEND_SOUTH_WEST,
-                TILE.PIPE.BEND_SOUTH_EAST,
+                TILE.PIPE.BEND_NORTH_WEST,
+                TILE.PIPE.BEND_NORTH_EAST,
             ],
             east: [
+                TILE.STARTING,
                 TILE.PIPE.HORIZONTAL_EAST_WEST,
-                TILE.PIPE.BEND_NORTH_EAST,
-                TILE.PIPE.BEND_SOUTH_EAST,
+                TILE.PIPE.BEND_NORTH_WEST,
+                TILE.PIPE.BEND_SOUTH_WEST,
             ],
-            west: []
+            west: [TILE.STARTING,]
         }],
 
     ])('from %s', (currentPipe, expectedAllowedPipes) => {
@@ -194,21 +206,31 @@ test('find next position in a grid', () => {
     grid.set('2,3', TILE.PIPE.HORIZONTAL_EAST_WEST)
     grid.set('3,3', TILE.PIPE.BEND_NORTH_WEST)
 
-    const startingTile = findTilePosition(TILE.STARTING, grid)
+    // Go to the next position to start the search
+    // Because the starting position "S" doesn't have any allowed connected pipes
+    // And the scheme doesn't show which pipe is behind "S"
+    const startingTile = {
+        tile: TILE.PIPE.HORIZONTAL_EAST_WEST,
+        position: {
+            x: 2,
+            y: 1
+        }
+    }
+
     const previousTile = {
-        tile: TILE.PIPE.VERTICAL_NORTH_SOUTH,
+        tile: TILE.STARTING,
         position: {
             x: 1,
-            y: 2
+            y: 1
         }
     }
 
     const nextPosition = findNextPipePosition(grid, startingTile, previousTile)
 
     expect(nextPosition).toEqual({
-        tile: TILE.PIPE.HORIZONTAL_EAST_WEST,
+        tile: TILE.PIPE.BEND_SOUTH_WEST,
         position: {
-            x: 2,
+            x: 3,
             y: 1
         }
     })
@@ -224,48 +246,66 @@ test('find next position in a grid with many unconnected pipes', () => {
 
     const grid = mapTiles(tiles)
 
-    const startingTile = findTilePosition(TILE.STARTING, grid)
-    const previousTile = {
-        tile: TILE.PIPE.VERTICAL_NORTH_SOUTH,
-        position: {
-            x: 1,
-            y: 2
-        }
-    }
-    const nextPosition = findNextPipePosition(grid, startingTile, previousTile)
-
-    expect(nextPosition).toEqual({
+    // Go to the next position to start the search
+    // Because the starting position "S" doesn't have any allowed connected pipes
+    // And the scheme doesn't show which pipe is behind "S"
+    const startingTile = {
         tile: TILE.PIPE.HORIZONTAL_EAST_WEST,
         position: {
             x: 2,
+            y: 1
+        }
+    }
+    
+    const previousTile = {
+        tile: TILE.STARTING,
+        position: {
+            x: 1,
+            y: 1
+        }
+    }
+
+    const nextPosition = findNextPipePosition(grid, startingTile, previousTile)
+
+    expect(nextPosition).toEqual({
+        tile: TILE.PIPE.BEND_SOUTH_WEST,
+        position: {
+            x: 3,
             y: 1
         }
     })
 })
 
 
-// test('find all the next connected pipes until reach starting tile', () => {
-//     const tiles = 
-// `-L|F7
-//  7S-7|
-//  L|7||
-//  -L-J|
-//  L|-JF`
+test('find all the next connected pipes until reach starting tile', () => {
+    const tiles = 
+`-L|F7
+ 7S-7|
+ L|7||
+ -L-J|
+ L|-JF`
 
-//     const grid = mapTiles(tiles)
+    const grid = mapTiles(tiles)
 
-//     const startingTile = findTilePosition(TILE.STARTING, grid)
-//     const previousTile = {
-//         tile: TILE.PIPE.VERTICAL_NORTH_SOUTH,
-//         position: {
-//             x: 1,
-//             y: 2
-//         }
-//     }
+    const startingTile = {
+        tile: TILE.PIPE.HORIZONTAL_EAST_WEST,
+        position: {
+            x: 2,
+            y: 1
+        }
+    }
+    
+    const previousTile = {
+        tile: TILE.STARTING,
+        position: {
+            x: 1,
+            y: 1
+        }
+    }
 
-//     const allNextTiles = findAllNextTiles(grid, startingTile, previousTile)
+    const allNextTiles = findAllNextTiles(grid, startingTile, previousTile)
 
-//     expect(allNextTiles.length).toBe(6)
+    expect(allNextTiles.length).toBe(6)
 
 
-// })
+})
